@@ -38,13 +38,17 @@ export default function About() {
               I'm a Full-Stack Developer who has shipped <strong>100+ REST APIs</strong> across
               production systems — from <strong>Kafka-based import pipelines</strong> processing
               millions of rows to <strong>AI-powered Instagram automations</strong> that detect
-              outfits and deliver products straight through DMs.
+              outfits and deliver products straight through DMs. I work across both
+              {' '}<strong>Node.js / NestJS</strong> and <strong>Python / FastAPI</strong> backends,
+              picking the right tool for the job.
             </p>
             <p>
               I obsess over <strong>performance</strong> — profiling slow queries, adding the right
               indexes, layering <strong>Redis caching</strong>, and bringing <strong>P99 latencies down</strong> to
               where users actually feel the difference. I've cut critical-path response times by{' '}
-              <strong>more than half</strong> on production endpoints.
+              <strong>more than half</strong> on production endpoints. On the data side I've worked
+              with <strong>DynamoDB</strong> at scale — designing efficient access patterns, GSIs,
+              and keeping costs sane under high read/write throughput.
             </p>
             <p>
               Day to day I work across <strong>microservices, authentication, observability,
@@ -54,13 +58,21 @@ export default function About() {
               work that keeps a system healthy.
             </p>
             <p>
+              On the AI side, I build with <strong>LangChain, LLMs</strong>, and multiple AI
+              provider APIs — designing <strong>context chains</strong> that preserve conversation
+              state efficiently, applying <strong>token optimization</strong> strategies (prompt
+              compression, caching, chunking) to deliver accurate results without blowing up
+              costs, and wiring multi-step agentic workflows that actually hold up in production.
+            </p>
+            <p>
               On the frontend, I build <strong>responsive, accessible interfaces</strong> in
               Next.js & React — dashboards, internal tools, and customer-facing flows. I care
               about pixel-perfect detail and snappy interactions.
             </p>
             <p>
-              Recently I've been deep in <strong>agentic AI</strong>, multi-agent systems, and
-              workflow automation — pushing what one developer can ship end-to-end.
+              Outside of work I've solved <strong>500+ DSA problems</strong> across{' '}
+              <strong>LeetCode, CodeChef & GFG</strong> — keeps the problem-solving instincts sharp
+              and makes algorithmic trade-offs in production code second nature.
             </p>
           </div>
 
@@ -92,9 +104,10 @@ export default function About() {
 {`  `}<span className="c-prop">name</span>: <span className="c-str">'Mohit Tantway'</span>,
 {`  `}<span className="c-prop">role</span>: <span className="c-str">'Full-Stack Developer'</span>,
 {`  `}<span className="c-prop">stack</span>: [
-{`    `}<span className="c-str">'NestJS'</span>, <span className="c-str">'Next.js'</span>,
-{`    `}<span className="c-str">'Kafka'</span>, <span className="c-str">'Redis'</span>,
-{`    `}<span className="c-str">'TypeScript'</span>, <span className="c-str">'Docker'</span>
+{`    `}<span className="c-str">'NestJS'</span>, <span className="c-str">'FastAPI'</span>,
+{`    `}<span className="c-str">'Next.js'</span>, <span className="c-str">'Kafka'</span>,
+{`    `}<span className="c-str">'LangChain'</span>, <span className="c-str">'Redis'</span>,
+{`    `}<span className="c-str">'DynamoDB'</span>, <span className="c-str">'Docker'</span>
 {`  `}],
 {`  `}<span className="c-prop">focus</span>: <span className="c-str">'AI · Scale · DX'</span>,
 {`  `}<span className="c-prop">shipping</span>: <span className="c-bool">true</span>,
@@ -122,10 +135,10 @@ export default function About() {
               <li>
                 <span className="now-icon">🤖</span>
                 <div>
-                  <div className="now-title">Agentic AI Workflows</div>
-                  <div className="now-sub">Claude Code · multi-agent orchestration</div>
+                  <div className="now-title">LLM-Powered Pipelines</div>
+                  <div className="now-sub">LangChain · context chains · token optimization</div>
                 </div>
-                <span className="now-badge exploring">exploring</span>
+                <span className="now-badge exploring">shipping</span>
               </li>
               <li>
                 <span className="now-icon">📈</span>
@@ -159,8 +172,8 @@ export default function About() {
                 <div className="signal-key">commits this year</div>
               </div>
               <div className="signal-item">
-                <div className="signal-val">14</div>
-                <div className="signal-key">repos shipped</div>
+                <div className="signal-val">500+</div>
+                <div className="signal-key">DSA problems solved</div>
               </div>
               <div className="signal-item">
                 <div className="signal-val">∞</div>

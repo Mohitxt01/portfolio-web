@@ -2,32 +2,32 @@ const GROUPS = [
   {
     icon: '⚡',
     title: 'AI & Automation',
-    tags: ['Agentic AI', 'Multi-agent Systems', 'Claude Code', 'Prompt Engineering', 'Workflow Automation', 'AI Pipelines'],
-  },
-  {
-    icon: '⌨',
-    title: 'Languages',
-    tags: ['TypeScript', 'JavaScript', 'Python', 'C++', 'C'],
+    tags: ['LangChain', 'LLMs', 'Agentic AI', 'Multi-agent Systems', 'Context Chains', 'Token Optimization', 'Multi-Provider AI APIs', 'Claude Code', 'Prompt Engineering', 'Workflow Automation', 'AI Pipelines'],
   },
   {
     icon: '▲',
-    title: 'Frontend',
-    tags: ['Next.js', 'React.js', 'Redux', 'HTML/CSS', 'Responsive UI'],
+    title: 'Languages & Frontend',
+    tags: ['TypeScript', 'JavaScript', 'Python', 'SQL', 'C++', 'C', 'Next.js', 'React.js', 'Redux', 'HTML/CSS', 'Responsive UI'],
   },
   {
     icon: '◆',
     title: 'Backend',
-    tags: ['NestJS', 'Node.js', 'Express.js', 'Kafka', 'BullMQ', 'Microservices'],
+    tags: ['NestJS', 'FastAPI', 'Flask', 'Node.js', 'Express.js', 'Kafka', 'BullMQ', 'Microservices'],
   },
   {
     icon: '⬢',
     title: 'Databases & Cloud',
-    tags: ['MySQL', 'MongoDB', 'Redis', 'AWS S3', 'Trino'],
+    tags: ['MySQL', 'PostgreSQL', 'MongoDB', 'DynamoDB', 'Redis', 'AWS S3', 'Trino'],
   },
   {
     icon: '⚙',
     title: 'DevOps & Tools',
     tags: ['Docker', 'PM2', 'EC2', 'Nginx', 'Ngrok', 'Git', 'Jira', 'Signoz'],
+  },
+  {
+    icon: '🧩',
+    title: 'Problem Solving',
+    tags: ['LeetCode', 'CodeChef', 'GeeksForGeeks', '500+ DSA Problems', 'Data Structures', 'Algorithms'],
   },
 ];
 
