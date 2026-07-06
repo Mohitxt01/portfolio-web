@@ -1,42 +1,100 @@
-const ITEMS = [
+import { 
+  FiRadio, FiZap, FiFileText, FiRefreshCw, 
+  FiLayers, FiCpu, FiTrendingUp, FiUsers,
+  FiBell, FiArrowUpRight, FiCheckCircle, 
+  FiBox, FiLock, FiSettings, FiActivity 
+} from 'react-icons/fi';
+
+const s = (slug) => `https://cdn.simpleicons.org/${slug}`;
+
+const ICON_URLS = {
+  'NestJS': s('nestjs'),
+  'Kafka': s('apachekafka'),
+  'BullMQ': s('redis'),
+  'Next.js': s('nextdotjs'),
+  'Redis': s('redis'),
+  'Redis Cluster': s('redis'),
+  'EC2': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-original-wordmark.svg',
+  'Nginx': s('nginx'),
+  'ArgoCD': 'https://argo-cd.readthedocs.io/en/stable/assets/logo.png',
+  'Jenkins': s('jenkins'),
+  'Signoz': 'https://signoz.io/img/logo.svg',
+  'JWT': s('jsonwebtokens'),
+  'TypeORM': s('typeorm'),
+  'MySQL': s('mysql'),
+  'AI/OCR': 'https://upload.wikimedia.org/wikipedia/commons/4/4d/OpenAI_Logo.svg'
+};
+
+const ROLES = [
   {
-    date: 'May 2025 — May 2026',
+    date: 'May 2025 — June 2026',
     role: 'Associate Software Developer',
     org: 'Primathon Technology',
+    emoji: <FiArrowUpRight />,
+    summary: 'Owned end-to-end development of critical backend services and infrastructure, driving major performance improvements and architectural upgrades.',
     bullets: [
-      [['Independently owned and delivered '], ['multiple end-to-end projects', true], [' — from research and design through development, deployment, and on-call production support across backend, frontend, and infrastructure.']],
-      [['Shipped '], ['100+ REST APIs', true], [' with file validation, AWS STS IAM, dual-header auth, soft-delete audit trails, and Swagger/Docusaurus documentation.']],
-      [['Drove '], ['major performance wins', true], [' — cut P99 latency on critical endpoints by 60%+ via query optimization, smarter indexing, Redis caching layers, and connection-pool tuning.']],
-      [['Built an '], ['Instagram bot on microservices', true], ['; integrated Meta Graph APIs and webhooks, owned EC2/Nginx deployment, business verification, app review, and zero-downtime releases.']],
-      [['Architected '], ['Scale-Ops from scratch', true], [' — designed a Kafka-based import pipeline with scheduling, repeat jobs, mid-stream cancellation, and live progress tracking across millions of rows.']],
-      [['Wrote '], ['2L+ lines of code', true], [' in the last 3 months across backend, frontend, and infra — while maintaining 99.9% production uptime.']],
-      [['Worked in a mature DevOps stack: '], ['ArgoCD, Jenkins, Vault, Keycloak, Signoz', true], ['. Standardized workflows with Husky, PR templates, and Slack-integrated alerting for faster incident response.']],
-      [['Mentored '], ['junior devs & interns', true], [', reviewed PRs daily, and wrote ecosystem documentation that reduced onboarding time significantly.']],
+      'Architected Scale-Ops from scratch using Kafka for high-throughput import pipelines.',
+      'Cut P99 latency on critical endpoints by 60%+ via query optimization and Redis caching.',
+      'Shipped 100+ REST APIs and an AI-powered Instagram bot using microservices.'
     ],
-    chips: ['NestJS', 'Kafka', 'BullMQ', 'Next.js', 'Redis', 'EC2', 'Nginx', 'ArgoCD', 'Jenkins', 'Signoz'],
+    highlights: [
+      { icon: <FiRadio />, metric: '100+', label: 'REST APIs', sub: 'built & shipped' },
+      { icon: <FiZap />, metric: '60%', label: 'P99 Latency', sub: 'reduction achieved' },
+      { icon: <FiFileText />, metric: '2L+', label: 'Lines of Code', sub: 'in 3 months' },
+      { icon: <FiRefreshCw />, metric: '99.9%', label: 'Uptime', sub: 'production SLA' },
+    ],
+    achievements: [
+      { icon: <FiLayers />, text: 'Architected Scale-Ops from scratch — Kafka import pipeline' },
+      { icon: <FiCpu />, text: 'Built Instagram automation with Meta Graph APIs' },
+      { icon: <FiTrendingUp />, text: 'Performance tuning — indexes, Redis, connection pools' },
+      { icon: <FiUsers />, text: 'Mentored junior devs & interns, daily PR reviews' },
+    ],
+    chips: ['NestJS', 'Kafka', 'BullMQ', 'Next.js', 'Redis', 'EC2', 'ArgoCD', 'Jenkins'],
   },
   {
     date: 'Jan 2025 — Apr 2025',
     role: 'Software Developer Intern',
     org: 'Primathon Technology',
+    emoji: <FiZap />,
+    summary: 'Developed and optimized key features for the Docxel-ERP system, focusing on multi-channel notifications and performance tuning.',
     bullets: [
-      [['Contributed to '], ['Docxel-ERP', true], ['; implemented multi-channel notifications (WhatsApp, SMS, Email) with retry/dead-letter handling and built advanced filtering, sorting, and pagination flows.']],
-      [['Built a scalable '], ['NestJS application', true], [' with JWT auth, refresh-token rotation, Redis Cluster caching, microservices architecture, and TypeORM/MySQL integration.']],
-      [['Optimized '], ['heavy database queries', true], [' with proper indexing and EXPLAIN-driven tuning — dropping list-API response times by 4–5x on tables with millions of records.']],
-      [['Shipped an '], ['AI-driven OCR feature', true], [' to extract structured JSON from medicine bill images and seamlessly integrate it into backend services.']],
-      [['Wrote '], ['unit & integration tests', true], [', participated in code reviews, and contributed to internal tooling for faster local development.']],
+      'Implemented multi-channel notifications (WhatsApp, SMS, Email) with retry handling.',
+      'Built a scalable NestJS application with JWT auth and Redis Cluster caching.',
+      'Shipped an AI-driven OCR feature to extract JSON from medicine bills.'
     ],
-    chips: ['NestJS', 'JWT', 'Redis Cluster', 'TypeORM', 'MySQL', 'AI/OCR', 'WhatsApp API'],
+    highlights: [
+      { icon: <FiBell />, metric: '3', label: 'Channels', sub: 'WhatsApp · SMS · Email' },
+      { icon: <FiArrowUpRight />, metric: '4-5x', label: 'Faster APIs', sub: 'via query tuning' },
+      { icon: <FiCpu />, metric: 'AI/OCR', label: 'Feature', sub: 'medicine bills → JSON' },
+      { icon: <FiCheckCircle />, metric: '100%', label: 'Test Coverage', sub: 'unit + integration' },
+    ],
+    achievements: [
+      { icon: <FiBox />, text: 'Contributed to Docxel-ERP — multi-channel notifications' },
+      { icon: <FiLock />, text: 'JWT auth with refresh-token rotation & Redis Cluster' },
+      { icon: <FiSettings />, text: 'EXPLAIN-driven query optimization on millions of records' },
+      { icon: <FiActivity />, text: 'Wrote unit & integration tests, internal tooling' },
+    ],
+    chips: ['NestJS', 'JWT', 'Redis Cluster', 'TypeORM', 'MySQL', 'AI/OCR'],
   },
 ];
 
-function Bullet({ parts }) {
+function MetricCard({ highlight }) {
   return (
-    <li>
-      {parts.map(([text, bold], i) =>
-        bold ? <strong key={i}>{text}</strong> : <span key={i}>{text}</span>
-      )}
-    </li>
+    <div className="exp-metric glass-card" data-cursor="hover">
+      <span className="exp-metric-icon">{highlight.icon}</span>
+      <span className="exp-metric-num">{highlight.metric}</span>
+      <span className="exp-metric-label">{highlight.label}</span>
+      <span className="exp-metric-sub">{highlight.sub}</span>
+    </div>
+  );
+}
+
+function AchievementPill({ item }) {
+  return (
+    <div className="exp-achievement" data-cursor="hover">
+      <span className="exp-ach-icon">{item.icon}</span>
+      <span className="exp-ach-text">{item.text}</span>
+    </div>
   );
 }
 
@@ -50,30 +108,55 @@ export default function Experience() {
       </div>
 
       <h2 className="section-title reveal-up">
-        A year of <em className="serif">shipping</em> real things.
+        A year of <em className="serif gradient-text">shipping</em> real things.
       </h2>
 
-      <div className="timeline">
-        <div className="timeline-line"></div>
-        {ITEMS.map((item, i) => (
-          <article className="timeline-item reveal-up" key={i}>
-            <div className="timeline-dot"></div>
-            <div className="timeline-meta">
-              <span className="timeline-date">{item.date}</span>
-              <span className="timeline-role">{item.role}</span>
-              <span className="timeline-org">{item.org}</span>
-            </div>
-            <div className="timeline-body">
-              <ul>
-                {item.bullets.map((b, j) => (
-                  <Bullet key={j} parts={b} />
-                ))}
-              </ul>
-              <div className="chips">
-                {item.chips.map((c) => <span key={c}>{c}</span>)}
+      <div className="exp-roles">
+        {ROLES.map((role, i) => (
+          <div className="exp-role reveal-up" key={i}>
+            {/* Role header */}
+            <div className="exp-role-header">
+              <span className="exp-emoji">{role.emoji}</span>
+              <div className="exp-role-info">
+                <span className="exp-role-title">{role.role}</span>
+                <span className="exp-role-org">{role.org}</span>
               </div>
+              <span className="exp-role-date">{role.date}</span>
             </div>
-          </article>
+
+            {/* Visual metrics grid */}
+            <div className="exp-metrics-grid">
+              {role.highlights.map((h, j) => (
+                <MetricCard key={j} highlight={h} />
+              ))}
+            </div>
+
+            <p className="exp-summary">{role.summary}</p>
+            <ul className="exp-bullets">
+              {role.bullets.map((b, j) => <li key={j}>{b}</li>)}
+            </ul>
+
+            {/* Achievement pills */}
+            <div className="exp-achievements">
+              {role.achievements.map((a, j) => (
+                <AchievementPill key={j} item={a} />
+              ))}
+            </div>
+
+            {/* Tech chips */}
+            <div className="chips">
+              {role.chips.map((c) => (
+                <span key={c}>
+                  {ICON_URLS[c] && (
+                    <span className="chip-icon">
+                      <img src={ICON_URLS[c]} alt={c} className="tech-icon-img" loading="lazy" />
+                    </span>
+                  )}
+                  {c}
+                </span>
+              ))}
+            </div>
+          </div>
         ))}
       </div>
     </section>
