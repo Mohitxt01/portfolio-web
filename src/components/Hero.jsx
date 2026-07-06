@@ -90,6 +90,10 @@ export default function Hero() {
         </p>
 
         <div className="hero-cta reveal-up">
+          <a href="#contact" className="btn btn-ghost magnetic" data-cursor="hover">
+            <span className="btn-shimmer"></span>
+            <span>Get In Touch</span>
+          </a>
           <a href="#projects" className="btn btn-primary magnetic" data-cursor="hover">
             <span className="btn-bg"></span>
             <span className="btn-text">
@@ -98,10 +102,6 @@ export default function Hero() {
                 <path d="M7 17L17 7M7 7h10v10" />
               </svg>
             </span>
-          </a>
-          <a href="#contact" className="btn btn-ghost magnetic" data-cursor="hover">
-            <span className="btn-shimmer"></span>
-            <span>Get In Touch</span>
           </a>
         </div>
 

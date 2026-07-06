@@ -51,7 +51,7 @@ export default function Contact() {
 
       <h2 className="contact-headline" ref={headlineRef}>
         <span className="line">{splitLine("Let's build")}</span>
-        <span className="line">{splitLine('something ')}<em className="serif gradient-text">{splitLine('extraordinary')}</em></span>
+        <span className="line">{splitLine('something ')}<em className="serif gradient-text" style={{ display: 'inline-block' }}>extraordinary</em></span>
         <span className="line">{splitLine('together.')}</span>
       </h2>
 
