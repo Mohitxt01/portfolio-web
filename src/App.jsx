@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Cursor from './components/Cursor.jsx';
-import Loader from './components/Loader.jsx';
+import NeuralCanvas from './components/NeuralCanvas.jsx';
 import Nav from './components/Nav.jsx';
 import Hero from './components/Hero.jsx';
 import Marquee from './components/Marquee.jsx';
@@ -11,22 +11,24 @@ import Skills from './components/Skills.jsx';
 import Contact from './components/Contact.jsx';
 import Footer from './components/Footer.jsx';
 import Backdrop from './components/Backdrop.jsx';
+import ScrollProgress from './components/ScrollProgress.jsx';
+import EasterEgg from './components/EasterEgg.jsx';
 import useAnimations from './hooks/useAnimations.js';
 import useRevealOnScroll from './hooks/useRevealOnScroll.js';
 import useMagnetic from './hooks/useMagnetic.js';
 
 export default function App() {
-  const [loaded, setLoaded] = useState(false);
-
-  useAnimations(loaded);
+  useAnimations(true);
   useRevealOnScroll();
   useMagnetic();
 
   return (
     <>
       <Cursor />
+      <NeuralCanvas />
       <Backdrop />
-      <Loader onDone={() => setLoaded(true)} />
+      <ScrollProgress />
+      <EasterEgg />
       <Nav />
       <main>
         <Hero />
@@ -41,3 +43,4 @@ export default function App() {
     </>
   );
 }
+

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 const LINKS = [
   { num: '01', label: 'About', href: '#about' },
@@ -11,12 +11,42 @@ const LINKS = [
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
+  const indicatorRef = useRef(null);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60);
-    window.addEventListener('scroll', onScroll);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 60);
+
+      // Active section tracking
+      const sections = ['contact', 'skills', 'projects', 'experience', 'about', 'home'];
+      for (const id of sections) {
+        const el = document.getElementById(id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= window.innerHeight * 0.4) {
+            setActiveSection(id);
+            break;
+          }
+        }
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  // Animate the underline indicator to the active link
+  useEffect(() => {
+    const activeLink = document.querySelector(`.nav-links a[href="#${activeSection}"]`);
+    const indicator = indicatorRef.current;
+    if (activeLink && indicator) {
+      const linkRect = activeLink.getBoundingClientRect();
+      const parentRect = activeLink.closest('.nav-links').getBoundingClientRect();
+      indicator.style.width = linkRect.width + 'px';
+      indicator.style.left = (linkRect.left - parentRect.left) + 'px';
+      indicator.style.opacity = activeSection === 'home' ? '0' : '1';
+    }
+  }, [activeSection]);
 
   const handleAnchor = (e, href) => {
     e.preventDefault();
@@ -37,11 +67,17 @@ export default function Nav() {
           <ul className="nav-links">
             {LINKS.map((l) => (
               <li key={l.href}>
-                <a href={l.href} data-cursor="hover" onClick={(e) => handleAnchor(e, l.href)}>
+                <a
+                  href={l.href}
+                  data-cursor="hover"
+                  className={activeSection === l.href.slice(1) ? 'active' : ''}
+                  onClick={(e) => handleAnchor(e, l.href)}
+                >
                   <span>{l.num}</span> {l.label}
                 </a>
               </li>
             ))}
+            <div className="nav-indicator" ref={indicatorRef} />
           </ul>
           <a href="#contact" className="nav-cta" data-cursor="hover" onClick={(e) => handleAnchor(e, '#contact')}>
             <span>Let's Talk</span>
@@ -62,9 +98,12 @@ export default function Nav() {
 
       <div className={`mobile-menu${open ? ' open' : ''}`}>
         <ul>
-          {LINKS.map((l) => (
-            <li key={l.href}>
-              <a href={l.href} onClick={(e) => handleAnchor(e, l.href)}>{l.label}</a>
+          {LINKS.map((l, i) => (
+            <li key={l.href} style={{ '--menu-index': i }}>
+              <a href={l.href} onClick={(e) => handleAnchor(e, l.href)}>
+                <span className="mobile-menu-num">{l.num}</span>
+                {l.label}
+              </a>
             </li>
           ))}
         </ul>
