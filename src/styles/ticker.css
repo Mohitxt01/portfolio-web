@@ -1,0 +1,97 @@
+/* =========================================================
+   TICKER
+   ========================================================= */
+
+.ticker {
+  position: relative;
+  z-index: var(--z-content);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  overflow: hidden;
+  /* Never a source of document-level horizontal scroll. */
+  max-width: 100%;
+}
+
+/* Edges fade into the page instead of being clipped by a hard border. */
+.ticker::before,
+.ticker::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: clamp(3rem, 12vw, 10rem);
+  z-index: 2;
+  pointer-events: none;
+}
+.ticker::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--void), transparent);
+}
+.ticker::after {
+  right: 0;
+  background: linear-gradient(270deg, var(--void), transparent);
+}
+
+.ticker__row {
+  overflow: hidden;
+  padding-block: clamp(0.65rem, 1.4vw, 1rem);
+}
+.ticker__row + .ticker__row {
+  border-top: 1px solid var(--line);
+}
+
+.ticker__track,
+.ticker__static {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  will-change: transform;
+}
+
+.ticker__static {
+  flex-wrap: wrap;
+  width: auto;
+  justify-content: center;
+  will-change: auto;
+}
+
+.ticker__item {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(0.8rem, 2vw, 1.6rem);
+  padding-inline: clamp(0.8rem, 2vw, 1.6rem);
+  font-family: var(--display);
+  font-size: clamp(0.95rem, 1.7vw, 1.45rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--ink-3);
+  transition: color var(--d-fast) var(--e-out);
+}
+.ticker__item:hover {
+  color: var(--ink);
+}
+
+.ticker__dot {
+  width: 4px;
+  height: 4px;
+  border-radius: var(--r-full);
+  background: var(--lime-dim);
+  flex: none;
+}
+
+/* Second row leans violet so the two bands read as different channels. */
+.ticker__track.is-rev .ticker__dot {
+  background: var(--violet);
+}
+.ticker__track.is-rev .ticker__item {
+  color: var(--ink-4);
+}
+.ticker__track.is-rev .ticker__item:hover {
+  color: var(--ink-2);
+}
+
+.ticker--static .ticker__item {
+  color: var(--ink-3);
+}

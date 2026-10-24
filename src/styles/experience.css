@@ -1,0 +1,265 @@
+/* =========================================================
+   EXPERIENCE — scroll-scrubbed timeline
+   A hairline rail draws itself down the left edge; nodes
+   ignite as it passes them.
+   ========================================================= */
+
+.exp {
+  --rail-col: clamp(2.25rem, 5vw, 4.5rem);
+  --dot: 13px;
+}
+
+.exp__title {
+  max-width: 26ch;
+}
+
+/* ---------------- Rail ---------------- */
+
+.exp__timeline {
+  position: relative;
+}
+
+/* The rail sits at the centre of the gutter column so dots land on it
+   exactly, at every breakpoint, without per-card measurement. */
+.exp__rail {
+  position: absolute;
+  top: 0.9rem;
+  bottom: 2.5rem;
+  left: calc(var(--rail-col) / 2 - 2px);
+  width: 4px;
+  pointer-events: none;
+}
+
+.exp__rail-svg {
+  width: 4px;
+  height: 100%;
+  overflow: visible;
+}
+
+.exp__rail-track {
+  fill: none;
+  stroke: var(--line-2);
+  stroke-width: 1;
+}
+
+.exp__rail-progress {
+  fill: none;
+  stroke: var(--lime);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 6px var(--lime-a));
+}
+
+/* ---------------- Items ---------------- */
+
+.exp__list {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2.5rem, 5vw, 5rem);
+}
+
+.exp__item {
+  display: grid;
+  grid-template-columns: var(--rail-col) minmax(0, 1fr);
+  align-items: start;
+}
+
+.exp__dot {
+  position: relative;
+  justify-self: center;
+  margin-top: 1.55rem;
+  width: var(--dot);
+  height: var(--dot);
+  border-radius: var(--r-full);
+  background: var(--void);
+  border: 1px solid var(--line-3);
+  display: grid;
+  place-items: center;
+  transition: border-color var(--d-base) var(--e-out), box-shadow var(--d-base) var(--e-out);
+}
+
+.exp__dot-core {
+  width: 5px;
+  height: 5px;
+  border-radius: var(--r-full);
+  background: var(--ink-4);
+  transition: background var(--d-base) var(--e-out), transform var(--d-base) var(--e-spring);
+}
+
+.exp__dot.is-lit {
+  border-color: var(--lime);
+  box-shadow: 0 0 0 4px var(--lime-a);
+}
+.exp__dot.is-lit .exp__dot-core {
+  background: var(--lime);
+  transform: scale(1.25);
+}
+
+/* ---------------- Card ---------------- */
+
+.exp__card {
+  padding: clamp(1.4rem, 2.6vw, 2.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.1rem, 2vw, 1.75rem);
+}
+
+.exp__card-head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.exp__range {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--t-micro);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.exp__range-sep {
+  color: var(--ink-4);
+}
+
+.exp__role {
+  font-size: var(--t-h3);
+  line-height: 1;
+  color: var(--ink);
+}
+
+.exp__org {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: var(--t-sm);
+  color: var(--ink-2);
+}
+.exp__org-mark {
+  width: 5px;
+  height: 5px;
+  border-radius: var(--r-full);
+  background: var(--violet);
+  flex: none;
+}
+
+.exp__summary {
+  max-width: 54ch;
+}
+
+/* ---------------- Metrics (4-up) ---------------- */
+
+.exp__metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  overflow: hidden;
+}
+
+.exp__metric {
+  background: var(--void);
+  padding: 0.95rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.18rem;
+  transition: background var(--d-fast) var(--e-out);
+}
+.exp__metric:hover {
+  background: var(--obsidian);
+}
+
+.exp__metric-val {
+  font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+  line-height: 1;
+  color: var(--lime);
+  font-variant-numeric: tabular-nums;
+}
+
+.exp__metric-label {
+  font-size: var(--t-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.exp__metric-sub {
+  font-size: var(--t-micro);
+  color: var(--ink-3);
+  line-height: 1.35;
+}
+
+/* ---------------- Bullets ---------------- */
+
+.exp__bullets {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.exp__bullet {
+  display: grid;
+  grid-template-columns: 1.1rem minmax(0, 1fr);
+  gap: 0.6rem;
+  font-size: var(--t-body);
+  color: var(--ink-2);
+  line-height: 1.55;
+}
+
+.exp__bullet-mark {
+  color: var(--lime-dim);
+  font-size: 0.7rem;
+  line-height: 1.9;
+}
+
+/* ---------------- Stack chips ---------------- */
+
+.exp__stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.exp__chip {
+  font-size: var(--t-micro);
+  letter-spacing: 0.06em;
+  color: var(--ink-3);
+  padding: 0.3rem 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: var(--r-full);
+  background: var(--glass);
+  transition: color var(--d-fast) var(--e-out), border-color var(--d-fast) var(--e-out);
+}
+.exp__card:hover .exp__chip {
+  border-color: var(--line-2);
+  color: var(--ink-2);
+}
+
+/* ---------------- Breakpoints ---------------- */
+
+@media (min-width: 768px) {
+  .exp__metrics {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .exp__item {
+    grid-template-columns: var(--rail-col) minmax(0, 1fr);
+  }
+  .exp__card {
+    max-width: 68rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .exp {
+    --rail-col: 1.9rem;
+  }
+  .exp__card {
+    padding: 1.15rem;
+  }
+}

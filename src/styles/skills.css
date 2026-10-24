@@ -1,0 +1,151 @@
+/* =========================================================
+   SKILLS — selector + cloud
+   ========================================================= */
+
+.skills__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 1.5rem;
+  padding-bottom: 1.1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+/* ---------------- domain selector ---------------- */
+
+.skills__select {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.skills__opt {
+  --opt-accent: var(--lime);
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.44rem 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: var(--r-full);
+  background: transparent;
+  font-size: var(--t-xs);
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: var(--ink-3);
+  white-space: nowrap;
+  transition: color var(--d-fast) var(--e-out), border-color var(--d-fast) var(--e-out),
+    background var(--d-fast) var(--e-out);
+}
+
+.skills__optdot {
+  width: 5px;
+  height: 5px;
+  border-radius: var(--r-full);
+  background: var(--ink-4);
+  transition: background var(--d-fast) var(--e-out), box-shadow var(--d-fast) var(--e-out);
+}
+
+.skills__opt:hover {
+  color: var(--ink);
+  border-color: var(--line-2);
+}
+.skills__opt:hover .skills__optdot {
+  background: var(--opt-accent);
+}
+
+.skills__opt.is-active {
+  color: var(--ink);
+  border-color: color-mix(in oklab, var(--opt-accent) 42%, transparent);
+  background: color-mix(in oklab, var(--opt-accent) 8%, transparent);
+}
+.skills__opt.is-active .skills__optdot {
+  background: var(--opt-accent);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--opt-accent) 18%, transparent);
+}
+
+/* ---------------- count readout ---------------- */
+
+.skills__count {
+  font-size: var(--t-micro);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  white-space: nowrap;
+}
+.skills__countnum {
+  color: var(--lime);
+  font-weight: 600;
+}
+
+/* ---------------- blurb ---------------- */
+
+.skills__blurb {
+  margin-block: clamp(1.4rem, 3vw, 2.2rem);
+  max-width: 54ch;
+  min-height: 3.2em;
+  color: var(--ink-2);
+}
+
+/* ---------------- cloud ---------------- */
+
+.skills__cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.skills__chip {
+  --chip-accent: var(--lime);
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  background: var(--glass);
+  font-family: var(--mono);
+  font-size: var(--t-xs);
+  letter-spacing: 0.01em;
+  color: var(--ink-2);
+  white-space: nowrap;
+  cursor: default;
+  will-change: transform, opacity;
+  transition: color var(--d-fast) var(--e-out), border-color var(--d-fast) var(--e-out),
+    background var(--d-fast) var(--e-out);
+}
+
+/* The accent is held back until hover — the cloud at rest is hairlines. */
+.skills__chipdot {
+  width: 4px;
+  height: 4px;
+  border-radius: var(--r-full);
+  background: var(--ink-4);
+  flex: none;
+  transition: background var(--d-fast) var(--e-out);
+}
+
+.skills__chip:hover {
+  color: var(--ink);
+  border-color: color-mix(in oklab, var(--chip-accent) 40%, transparent);
+  background: color-mix(in oklab, var(--chip-accent) 7%, transparent);
+}
+.skills__chip:hover .skills__chipdot {
+  background: var(--chip-accent);
+}
+
+@media (max-width: 720px) {
+  .skills__bar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .skills__chip,
+  .skills__opt {
+    font-size: var(--t-micro);
+  }
+  .skills__blurb {
+    min-height: 0;
+  }
+}

@@ -1,0 +1,170 @@
+/* =========================================================
+   UI PRIMITIVES — buttons, chips, metric cells.
+   Shared so every section speaks the same visual language.
+   ========================================================= */
+
+/* ---------------- Buttons ---------------- */
+
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.95rem 1.6rem;
+  font-family: var(--mono);
+  font-size: var(--t-xs);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: var(--r-full);
+  border: 1px solid var(--line-2);
+  overflow: hidden;
+  isolation: isolate;
+  transition: color var(--d-fast) var(--e-out), border-color var(--d-fast) var(--e-out);
+}
+.btn svg {
+  flex: none;
+  width: 1em;
+  height: 1em;
+  transition: transform var(--d-base) var(--e-spring);
+}
+.btn:hover svg {
+  transform: translate(2px, -2px);
+}
+
+/* The fill wipes up from the bottom rather than cross-fading — it reads
+   as a deliberate mechanism instead of a hover colour change. */
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--lime);
+  transform: translateY(101%);
+  transition: transform var(--d-base) var(--e-out);
+}
+.btn:hover::before,
+.btn:focus-visible::before {
+  transform: translateY(0);
+}
+
+.btn--primary {
+  background: var(--ink);
+  color: var(--void);
+  border-color: transparent;
+  font-weight: 600;
+}
+
+.btn--ghost {
+  color: var(--ink);
+  background: transparent;
+}
+.btn--ghost:hover,
+.btn--ghost:focus-visible {
+  color: var(--void);
+  border-color: var(--lime);
+}
+
+/* ---------------- Chips (tech tags) ---------------- */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.38rem 0.72rem;
+  font-family: var(--mono);
+  font-size: var(--t-micro);
+  letter-spacing: 0.04em;
+  color: var(--ink-2);
+  background: var(--glass);
+  border: 1px solid var(--line);
+  border-radius: var(--r-full);
+  white-space: nowrap;
+  transition: color var(--d-fast) var(--e-out), border-color var(--d-fast) var(--e-out),
+    background var(--d-fast) var(--e-out), transform var(--d-fast) var(--e-out);
+}
+.chip:hover {
+  color: var(--ink);
+  border-color: var(--line-3);
+  background: var(--glass-2);
+  transform: translateY(-1px);
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+/* ---------------- Metric cell ---------------- */
+
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 1.1rem 1.15rem;
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  background: var(--glass);
+}
+.metric__value {
+  font-family: var(--mono);
+  font-size: clamp(1.3rem, 2.2vw, 1.85rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+.metric__label {
+  font-size: var(--t-xs);
+  font-weight: 500;
+  color: var(--ink-2);
+}
+.metric__sub {
+  font-family: var(--mono);
+  font-size: var(--t-micro);
+  color: var(--ink-3);
+  letter-spacing: 0.04em;
+}
+
+/* ---------------- Keycap ---------------- */
+
+kbd {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.5em;
+  padding: 0.15em 0.35em;
+  /* JetBrains Mono has no glyph for ⌘ (U+2318) and renders tofu, so the
+     system UI font leads here — it carries the symbol on every platform. */
+  font-family: -apple-system, 'Segoe UI Symbol', 'Noto Sans Symbols 2', var(--mono);
+  font-size: 0.9em;
+  line-height: 1;
+  color: var(--ink-2);
+  background: var(--raised);
+  border: 1px solid var(--line-2);
+  border-bottom-width: 2px;
+  border-radius: var(--r-xs);
+}
+
+/* ---------------- Bulleted list with a voltage marker ---------------- */
+
+.bullets {
+  display: grid;
+  gap: 0.7rem;
+}
+.bullets li {
+  position: relative;
+  padding-left: 1.5rem;
+  font-size: var(--t-body);
+  color: var(--ink-2);
+  line-height: 1.6;
+}
+.bullets li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 0.55rem;
+  height: 1px;
+  background: var(--lime);
+}

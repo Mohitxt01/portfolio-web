@@ -1,0 +1,54 @@
+/* =========================================================
+   SHARED SECTION CHROME — header device + title treatment
+   ========================================================= */
+
+.sec-head {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: clamp(2rem, 4vw, 3.5rem);
+}
+.sec-head--center {
+  justify-content: center;
+}
+
+.sec-head__num {
+  font-size: var(--t-micro);
+  font-weight: 600;
+  color: var(--lime);
+  letter-spacing: 0.14em;
+  flex: none;
+}
+
+.sec-head__rule {
+  height: 1px;
+  width: clamp(2rem, 8vw, 7rem);
+  background: linear-gradient(90deg, var(--line-3), transparent);
+  flex: none;
+}
+
+.sec-head__label {
+  color: var(--ink-3);
+}
+
+/* ---------------- Section titles ---------------- */
+
+.sec-title {
+  font-size: var(--t-h2);
+  max-width: 24ch;
+  margin-bottom: clamp(1.75rem, 3vw, 3rem);
+  text-wrap: balance;
+}
+.sec-title .serif {
+  text-transform: none;
+  font-size: 1.12em;
+  letter-spacing: -0.02em;
+}
+
+/* SplitText wraps each line; the mask is what makes lines rise
+   from behind an edge instead of just fading. */
+.split-line {
+  overflow: hidden;
+  display: block;
+  padding-bottom: 0.08em;
+}

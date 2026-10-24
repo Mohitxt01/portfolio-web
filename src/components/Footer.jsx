@@ -1,45 +1,76 @@
-import { useState, useEffect } from 'react';
+/* =========================================================
+   FOOTER — the last line of the document.
+   Quiet and typographic on purpose: after the contact
+   section shouts, this should only murmur.
+   ========================================================= */
+
+import { useEffect, useState } from 'react';
+import { FiArrowUp } from 'react-icons/fi';
+import { useApp } from '../context/AppContext.jsx';
+import { scrollToId } from '../hooks/useSmoothScroll.js';
+import { PERSON } from '../data/content.js';
+import '../styles/footer.css';
+
+const COLOPHON = ['React', 'GSAP', 'Lenis', 'raw WebGL2', 'hand-written CSS'];
 
 export default function Footer() {
+  const { play } = useApp();
   const [showTop, setShowTop] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setShowTop(window.scrollY > 500);
+    onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  const toTop = () => {
+    play('click');
+    scrollToId('home');
   };
 
   return (
-    <footer className="footer">
-      <div className="footer-grid">
-        <div>
-          <div className="footer-logo gradient-text">Mohit Tantway</div>
-          <div className="footer-sub">Full-Stack Developer · System Architect</div>
+    <footer className="foot">
+      <div className="shell foot__inner">
+        <div className="foot__brand">
+          <span className="foot__mark display" aria-hidden="true">
+            {PERSON.initials}
+          </span>
+          <span className="foot__name">
+            <strong>{PERSON.name}</strong>
+            <span className="foot__role mono">{PERSON.title}</span>
+          </span>
         </div>
-        <div className="footer-center">
-          <div className="footer-heartbeat">
-            Crafted with <span className="heart">❤</span> care
-          </div>
-        </div>
-        <div className="footer-meta">
-          <span>© 2026 — Designed & built from scratch</span>
-          <span>React · GSAP · Lenis · Vanilla CSS</span>
-        </div>
+
+        <p className="foot__colophon mono">
+          <span className="foot__colophon-label">Built with</span>
+          {COLOPHON.map((item, i) => (
+            <span key={item}>
+              {i > 0 && <span className="foot__dot" aria-hidden="true" />}
+              {item}
+            </span>
+          ))}
+        </p>
+
+        <p className="foot__legal mono">
+          <span>&copy; {new Date().getFullYear()} {PERSON.name}</span>
+          <span className="foot__dot" aria-hidden="true" />
+          <span>Designed &amp; built from scratch</span>
+        </p>
       </div>
 
       <button
-        className={`back-to-top ${showTop ? 'visible' : ''}`}
-        onClick={scrollToTop}
-        data-cursor="hover"
+        type="button"
+        className={`foot__top${showTop ? ' is-visible' : ''}`}
+        onClick={toTop}
         aria-label="Back to top"
+        // Hidden from the tab order while invisible — a focusable control
+        // nobody can see is a keyboard trap in all but name.
+        tabIndex={showTop ? 0 : -1}
+        data-cursor="hover"
+        data-cursor-snap=""
       >
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M12 19V5M5 12l7-7 7 7" />
-        </svg>
+        <FiArrowUp aria-hidden="true" />
       </button>
     </footer>
   );

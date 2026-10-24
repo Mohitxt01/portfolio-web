@@ -1,0 +1,332 @@
+/* =========================================================
+   TERMINAL — a real REPL, dressed as one.
+   ========================================================= */
+
+.term__title {
+  max-width: 22ch;
+}
+
+/* ---------------- the window ---------------- */
+
+.term__shell {
+  display: flex;
+  flex-direction: column;
+  max-width: 1000px;
+  height: clamp(420px, 62vh, 620px);
+  background: linear-gradient(168deg, var(--obsidian), var(--void));
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  box-shadow: 0 40px 90px -40px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(245, 243, 238, 0.02) inset;
+}
+
+/* ---------------- title bar ---------------- */
+
+.term__chrome {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  flex: none;
+  padding: 0.7rem 0.9rem;
+  border-bottom: 1px solid var(--line);
+  background: rgba(245, 243, 238, 0.015);
+}
+.term__dots {
+  display: flex;
+  gap: 0.35rem;
+  flex: none;
+}
+.term__dots i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ink-4);
+}
+.term__dots i:first-child {
+  background: var(--lime);
+  opacity: 0.55;
+}
+.term__chrome-title {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex: 1;
+  min-width: 0;
+  font-size: var(--t-micro);
+  color: var(--ink-3);
+  letter-spacing: 0.04em;
+}
+.term__chrome-title svg {
+  width: 0.9em;
+  height: 0.9em;
+  color: var(--lime);
+}
+.term__chrome-hint {
+  flex: none;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+@media (max-width: 620px) {
+  .term__chrome-hint {
+    display: none;
+  }
+}
+
+/* ---------------- scrollback ---------------- */
+
+.term__log {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 1rem 1.1rem 0.5rem;
+  font-size: clamp(0.7rem, 0.92vw, 0.82rem);
+  line-height: 1.72;
+  color: var(--ink-2);
+}
+.term__log:focus-visible {
+  outline-offset: -3px;
+}
+
+.term__row {
+  /* --i is the per-line stagger index, capped in the component so a
+     200-line dump never schedules a 200-step cascade. */
+  animation: termIn 0.26s var(--e-out) both;
+  animation-delay: calc(var(--i, 0) * 0.028s);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+@keyframes termIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+.term__gap {
+  height: 0.7em;
+}
+
+/* ---------------- semantic line colours ---------------- */
+
+.term__brand {
+  color: var(--lime);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.term__echo {
+  color: var(--ink);
+  font-weight: 500;
+}
+.term__head {
+  color: var(--ink);
+  font-weight: 600;
+}
+.term__muted {
+  color: var(--ink-3);
+}
+.term__hint {
+  color: var(--ink-4);
+  font-style: italic;
+}
+.term__para {
+  color: var(--ink-2);
+  max-width: 76ch;
+}
+.term__ok {
+  color: var(--lime);
+}
+.term__err {
+  color: var(--amber);
+}
+
+/* ---------------- key/value grids ---------------- */
+
+.term__grid {
+  display: grid;
+  gap: 0.1rem 1.2rem;
+  margin: 0.15rem 0;
+}
+.term__grid-row {
+  display: grid;
+  grid-template-columns: minmax(7rem, max-content) 1fr;
+  gap: 1.2rem;
+}
+.term__grid-row dt {
+  color: var(--cyan);
+}
+.term__grid-row dd {
+  color: var(--ink-3);
+  min-width: 0;
+}
+.term__grid--help .term__grid-row dt {
+  color: var(--lime);
+}
+@media (max-width: 560px) {
+  .term__grid-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+    margin-bottom: 0.45rem;
+  }
+}
+
+/* ---------------- tag rows ---------------- */
+
+.term__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin: 0.3rem 0;
+}
+.term__tags li {
+  padding: 0.18rem 0.5rem;
+  font-size: 0.92em;
+  color: var(--ink-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-xs);
+  background: var(--glass);
+}
+
+/* ---------------- links ---------------- */
+
+.term__linkrow a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--lime);
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--d-fast) var(--e-out);
+}
+.term__linkrow a:hover {
+  border-bottom-color: var(--lime);
+}
+.term__linkrow svg {
+  width: 0.85em;
+  height: 0.85em;
+}
+
+/* ---------------- neofetch ---------------- */
+
+.term__neo {
+  display: flex;
+  gap: clamp(1rem, 3vw, 2.2rem);
+  align-items: flex-start;
+  margin: 0.4rem 0 0.2rem;
+  flex-wrap: wrap;
+}
+.term__neo-logo {
+  margin: 0;
+  font-family: inherit;
+  /* The block-drawing glyphs only line up on a tight, fixed leading. */
+  font-size: 0.64em;
+  line-height: 1.04;
+  letter-spacing: 0;
+  white-space: pre;
+  color: var(--lime);
+  text-shadow: 0 0 18px rgba(200, 255, 0, 0.28);
+  flex: none;
+}
+.term__neo-info {
+  display: grid;
+  gap: 0.05rem;
+  min-width: 0;
+}
+.term__neo-item {
+  display: grid;
+  grid-template-columns: minmax(5.5rem, max-content) 1fr;
+  gap: 0.9rem;
+}
+.term__neo-item dt {
+  color: var(--violet);
+  font-weight: 500;
+}
+.term__neo-item dd {
+  color: var(--ink-2);
+  min-width: 0;
+  word-break: break-word;
+}
+
+/* ---------------- prompt ---------------- */
+
+.term__prompt {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex: none;
+  padding: 0.85rem 1.1rem;
+  border-top: 1px solid var(--line);
+  background: rgba(245, 243, 238, 0.015);
+  font-size: clamp(0.72rem, 0.95vw, 0.84rem);
+}
+.term__ps1 {
+  flex: none;
+  color: var(--lime);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.term__input {
+  flex: 1;
+  min-width: 0;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+  caret-color: var(--lime);
+}
+.term__input::placeholder {
+  color: var(--ink-4);
+}
+.term__run {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  color: var(--ink-3);
+  border: 1px solid var(--line);
+  border-radius: var(--r-xs);
+  transition: color var(--d-fast) var(--e-out), border-color var(--d-fast) var(--e-out),
+    background var(--d-fast) var(--e-out);
+}
+.term__run:hover {
+  color: var(--void);
+  background: var(--lime);
+  border-color: var(--lime);
+}
+.term__run svg {
+  width: 0.9em;
+  height: 0.9em;
+}
+
+/* ---------------- footnote ---------------- */
+
+.term__footnote {
+  margin-top: 0.9rem;
+  font-size: var(--t-micro);
+  letter-spacing: 0.06em;
+  color: var(--ink-4);
+}
+.term__suggest {
+  color: var(--ink-2);
+  border-bottom: 1px dashed var(--line-3);
+  transition: color var(--d-fast) var(--e-out), border-color var(--d-fast) var(--e-out);
+}
+.term__suggest:hover {
+  color: var(--lime);
+  border-bottom-color: var(--lime);
+}
+
+/* ---------------- reduced motion ---------------- */
+
+.term__shell--still .term__row {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .term__row {
+    animation: none;
+  }
+}

@@ -1,90 +1,251 @@
-import { useRef, useEffect } from 'react';
+/* =========================================================
+   CONTACT — closing section.
+   The headline reacts to the pointer per character; everything
+   else is deliberately quiet so the email is the loudest thing.
+   ========================================================= */
+
+import { useEffect, useRef } from 'react';
+import { FiCopy, FiCheck, FiLinkedin, FiMail, FiArrowUpRight, FiMapPin } from 'react-icons/fi';
+import { useApp } from '../context/AppContext.jsx';
+import { useMagnetic, useCopy, useLocalTime } from '../hooks/useInteractions.js';
+import SectionHeader from './SectionHeader.jsx';
+import { Accent } from './SectionHeader.jsx';
+import { PERSON } from '../data/content.js';
+import '../styles/contact.css';
+
+/* "Asia/Kolkata" → "IST" where the platform knows the abbreviation. */
+function zoneAbbr(timeZone) {
+  try {
+    const parts = new Intl.DateTimeFormat('en-IN', { timeZone, timeZoneName: 'short' }).formatToParts(
+      new Date()
+    );
+    const name = parts.find((p) => p.type === 'timeZoneName')?.value;
+    if (name && !/^GMT/i.test(name)) return name;
+  } catch {
+    /* fall through */
+  }
+  return timeZone.split('/').pop().replace(/_/g, ' ');
+}
+
+/** Splits a word into per-character spans the pointer loop can transform. */
+function Word({ children }) {
+  return (
+    <span className="contact__w">
+      {Array.from(children).map((ch, i) => (
+        <span className="contact__ch" key={`${ch}-${i}`}>
+          {ch}
+        </span>
+      ))}
+    </span>
+  );
+}
 
 export default function Contact() {
-  const headlineRef = useRef(null);
+  const { reduced, fine, notify, play } = useApp();
+  const { copied, copy } = useCopy();
+  const localTime = useLocalTime(PERSON.timezone);
+  const emailRef = useMagnetic({ strength: 0.16, disabled: reduced });
+
+  const headRef = useRef(null);
 
   useEffect(() => {
-    const el = headlineRef.current;
-    if (!el) return;
+    if (reduced || !fine) return;
+    const head = headRef.current;
+    if (!head) return;
+
+    const chars = Array.from(head.querySelectorAll('.contact__ch'));
+    if (!chars.length) return;
+
+    const RADIUS = 230;
+    const PUSH = 26;
+
+    /* Rects are measured once (and on resize) and stored in DOCUMENT
+       coordinates, so scrolling never invalidates the cache. Measuring
+       per character per frame is the classic way to kill a page. */
+    let rects = [];
+    const measure = () => {
+      const sx = window.scrollX;
+      const sy = window.scrollY;
+      rects = chars.map((el) => {
+        const r = el.getBoundingClientRect();
+        return { cx: r.left + r.width / 2 + sx, cy: r.top + r.height / 2 + sy };
+      });
+    };
+    measure();
+
+    const state = chars.map(() => ({ x: 0, y: 0 }));
+    let mx = -99999;
+    let my = -99999;
+    let inView = true;
+    let raf = 0;
 
     const onMove = (e) => {
-      const chars = el.querySelectorAll('.contact-char');
-      chars.forEach((char) => {
-        const rect = char.getBoundingClientRect();
-        const cx = rect.left + rect.width / 2;
-        const cy = rect.top + rect.height / 2;
-        const dx = (e.clientX - cx) / 40;
-        const dy = (e.clientY - cy) / 40;
-        char.style.transform = `translate(${dx}px, ${dy}px)`;
-      });
+      mx = e.clientX + window.scrollX;
+      my = e.clientY + window.scrollY;
     };
-
     const onLeave = () => {
-      const chars = el.querySelectorAll('.contact-char');
-      chars.forEach((char) => {
-        char.style.transform = '';
+      mx = -99999;
+      my = -99999;
+    };
+
+    const loop = () => {
+      raf = requestAnimationFrame(loop);
+      if (!inView) return;
+
+      for (let i = 0; i < chars.length; i++) {
+        const r = rects[i];
+        const s = state[i];
+        const dx = r.cx - mx;
+        const dy = r.cy - my;
+        const d = Math.hypot(dx, dy);
+
+        let tx = 0;
+        let ty = 0;
+        if (d < RADIUS) {
+          const f = (1 - d / RADIUS) ** 2 * PUSH;
+          const n = d || 1;
+          tx = (dx / n) * f;
+          ty = (dy / n) * f;
+        }
+
+        s.x += (tx - s.x) * 0.13;
+        s.y += (ty - s.y) * 0.13;
+        chars[i].style.transform = `translate3d(${s.x.toFixed(2)}px, ${s.y.toFixed(2)}px, 0)`;
+      }
+    };
+
+    let rafResize = 0;
+    const onResize = () => {
+      if (rafResize) return;
+      rafResize = requestAnimationFrame(() => {
+        rafResize = 0;
+        measure();
       });
     };
 
-    el.addEventListener('mousemove', onMove);
-    el.addEventListener('mouseleave', onLeave);
-    return () => {
-      el.removeEventListener('mousemove', onMove);
-      el.removeEventListener('mouseleave', onLeave);
-    };
-  }, []);
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        inView = entry.isIntersecting;
+        if (inView) measure();
+      },
+      { rootMargin: '20%' }
+    );
+    io.observe(head);
 
-  const splitLine = (text) =>
-    text.split('').map((char, i) => (
-      <span key={i} className="contact-char" style={{ '--char-i': i, transitionDelay: `${i * 0.01}s` }}>
-        {char === ' ' ? '\u00A0' : char}
-      </span>
-    ));
+    window.addEventListener('pointermove', onMove, { passive: true });
+    document.addEventListener('mouseleave', onLeave);
+    window.addEventListener('resize', onResize);
+    document.fonts?.ready.then(measure).catch(() => {});
+    raf = requestAnimationFrame(loop);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      if (rafResize) cancelAnimationFrame(rafResize);
+      io.disconnect();
+      window.removeEventListener('pointermove', onMove);
+      document.removeEventListener('mouseleave', onLeave);
+      window.removeEventListener('resize', onResize);
+      chars.forEach((el) => {
+        el.style.transform = '';
+      });
+    };
+  }, [reduced, fine]);
+
+  const onCopy = async () => {
+    const ok = await copy(PERSON.email);
+    notify(ok ? 'Email copied' : 'Could not copy', ok ? 'success' : 'error');
+    play(ok ? 'success' : 'error');
+  };
 
   return (
-    <section className="contact" id="contact">
-      <div className="section-header">
-        <span className="section-num">05</span>
-        <span className="section-line"></span>
-        <span className="section-tag">Contact</span>
-      </div>
+    <section className="section contact" id="contact">
+      <div className="shell">
+        <SectionHeader num="07" label="Contact" />
 
-      <h2 className="contact-headline" ref={headlineRef}>
-        <span className="line">{splitLine("Let's build")}</span>
-        <span className="line">{splitLine('something ')}<em className="serif gradient-text" style={{ display: 'inline-block' }}>extraordinary</em></span>
-        <span className="line">{splitLine('together.')}</span>
-      </h2>
+        <h2 className="contact__head display" ref={headRef}>
+          <Word>Let&rsquo;s</Word> <Word>build</Word> <Word>something</Word>{' '}
+          <Accent volt>
+            <Word>extraordinary</Word>
+          </Accent>{' '}
+          <Word>together.</Word>
+        </h2>
 
-      <a href="mailto:mohittantway1234@gmail.com" className="contact-email magnetic" data-cursor="link">
-        <span className="email-text">mohittantway1234@gmail.com</span>
-        <span className="email-glow"></span>
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M7 17L17 7M7 7h10v10" />
-        </svg>
-      </a>
+        <div className="contact__avail">
+          <span className="contact__pulse" aria-hidden="true" />
+          <span className="contact__availtext mono">
+            {PERSON.available ? 'Available for new opportunities' : 'Not currently available'}
+            {localTime && (
+              <>
+                {' · '}
+                <span className="contact__time">
+                  {localTime} {zoneAbbr(PERSON.timezone)}
+                </span>
+              </>
+            )}
+          </span>
+        </div>
 
-      <div className="contact-grid">
-        <a href="https://www.linkedin.com/in/mohit-tantway-61522a252/" target="_blank" rel="noreferrer" className="contact-link glass-card" data-cursor="link">
-          <span className="contact-link-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-          </span>
-          <span className="contact-label">LinkedIn</span>
-          <span className="contact-value">/in/Mohit-Tantway →</span>
-        </a>
-        <a href="mailto:mohittantway1234@gmail.com" className="contact-link glass-card" data-cursor="link">
-          <span className="contact-link-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          </span>
-          <span className="contact-label">Email</span>
-          <span className="contact-value">mohittantway1234@gmail.com →</span>
-        </a>
-        <a href="https://github.com/" target="_blank" rel="noreferrer" className="contact-link glass-card" data-cursor="link">
-          <span className="contact-link-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-          </span>
-          <span className="contact-label">GitHub</span>
-          <span className="contact-value">@mohittantway →</span>
-        </a>
+        <div className="contact__mail">
+          <a
+            href={`mailto:${PERSON.email}`}
+            className="contact__maillink"
+            ref={emailRef}
+            onPointerEnter={() => play('hover')}
+            data-cursor="link"
+          >
+            {PERSON.email}
+          </a>
+          <button
+            type="button"
+            className="contact__copy"
+            onClick={onCopy}
+            onPointerEnter={() => play('hover')}
+            aria-label={`Copy email address ${PERSON.email}`}
+            data-cursor="hover"
+            data-cursor-snap=""
+          >
+            {copied ? <FiCheck aria-hidden="true" /> : <FiCopy aria-hidden="true" />}
+            <span className="mono">{copied ? 'Copied' : 'Copy'}</span>
+          </button>
+        </div>
+
+        <ul className="contact__cards">
+          <li>
+            <a
+              className="contact__card panel panel-lit"
+              href={PERSON.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ '--card-accent': 'var(--cyan)' }}
+              onPointerEnter={() => play('hover')}
+              data-cursor="link"
+            >
+              <FiLinkedin className="contact__cardicon" aria-hidden="true" />
+              <span className="contact__cardlabel label">LinkedIn</span>
+              <span className="contact__cardvalue">{PERSON.linkedinHandle}</span>
+              <FiArrowUpRight className="contact__cardgo" aria-hidden="true" />
+            </a>
+          </li>
+          <li>
+            <a
+              className="contact__card panel panel-lit"
+              href={`mailto:${PERSON.email}`}
+              style={{ '--card-accent': 'var(--lime)' }}
+              onPointerEnter={() => play('hover')}
+              data-cursor="link"
+            >
+              <FiMail className="contact__cardicon" aria-hidden="true" />
+              <span className="contact__cardlabel label">Email</span>
+              <span className="contact__cardvalue">{PERSON.email}</span>
+              <FiArrowUpRight className="contact__cardgo" aria-hidden="true" />
+            </a>
+          </li>
+        </ul>
+
+        <p className="contact__loc mono">
+          <FiMapPin aria-hidden="true" />
+          {PERSON.location}
+        </p>
       </div>
     </section>
   );

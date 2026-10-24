@@ -1,0 +1,981 @@
+/* =========================================================
+   PROJECTS — pinned horizontal showcase
+   Desktop: the section pins and three panels translate left.
+   Below 1024px (or reduced motion): a plain vertical stack.
+   ========================================================= */
+
+.proj__title {
+  max-width: 26ch;
+}
+
+/* ---------------- Viewport + track ---------------- */
+
+.proj__viewport {
+  position: relative;
+}
+
+.proj__track {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(3rem, 7vw, 6rem);
+  padding-inline: var(--gutter);
+}
+
+.proj__progress {
+  display: none;
+}
+
+/* ---------------- Panel ---------------- */
+
+.proj__panel {
+  position: relative;
+  display: grid;
+  gap: clamp(1.75rem, 4vw, 3rem);
+  align-items: center;
+  padding: clamp(1.4rem, 3vw, 2.5rem);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: linear-gradient(170deg, var(--glass), transparent 55%);
+}
+
+.proj__content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.9rem, 1.8vw, 1.4rem);
+  min-width: 0;
+}
+
+.proj__index {
+  font-size: clamp(3.4rem, 9vw, 7rem);
+  line-height: 0.8;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--line-2);
+  letter-spacing: -0.06em;
+  pointer-events: none;
+}
+
+.proj__head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.proj__name {
+  font-size: var(--t-h2);
+  line-height: 0.92;
+  color: var(--ink);
+}
+
+.proj__tagline {
+  font-size: var(--t-lead);
+  color: var(--ink-2);
+  text-transform: none;
+  max-width: 34ch;
+}
+
+.proj__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: var(--t-micro);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.proj__meta-sep {
+  color: var(--lime);
+}
+
+.proj__summary {
+  font-size: var(--t-body);
+  line-height: 1.62;
+  color: var(--ink-2);
+  max-width: 52ch;
+}
+
+/* ---------------- Bullets ---------------- */
+
+.proj__bullets {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.proj__bullets li {
+  display: grid;
+  grid-template-columns: 1rem minmax(0, 1fr);
+  gap: 0.6rem;
+  font-size: var(--t-sm);
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+.proj__bullets svg {
+  width: 0.85rem;
+  height: 0.85rem;
+  margin-top: 0.3rem;
+  color: var(--lime-dim);
+  flex: none;
+}
+
+/* ---------------- Metrics ---------------- */
+
+.proj__metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  overflow: hidden;
+}
+
+.proj__metric {
+  background: var(--void);
+  padding: 0.8rem 0.85rem 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.proj__metric-v {
+  font-size: clamp(0.98rem, 1.5vw, 1.25rem);
+  line-height: 1.05;
+  color: var(--lime);
+  overflow-wrap: anywhere;
+}
+
+.proj__metric-l {
+  font-size: var(--t-micro);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  line-height: 1.35;
+}
+
+/* ---------------- Stack chips ---------------- */
+
+.proj__stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.proj__chip {
+  font-size: var(--t-micro);
+  letter-spacing: 0.05em;
+  color: var(--ink-3);
+  padding: 0.28rem 0.58rem;
+  border: 1px solid var(--line);
+  border-radius: var(--r-full);
+  transition: color var(--d-fast) var(--e-out), border-color var(--d-fast) var(--e-out);
+}
+.proj__panel:hover .proj__chip {
+  border-color: var(--line-2);
+  color: var(--ink-2);
+}
+
+/* ---------------- Mock holder ---------------- */
+
+.proj__mock {
+  min-width: 0;
+  display: flex;
+  justify-content: center;
+}
+
+/* =========================================================
+   MOCK 1 — pipeline console
+   ========================================================= */
+
+.mock {
+  width: 100%;
+  max-width: 30rem;
+}
+
+.mock--pipeline {
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-md);
+  background: var(--obsidian);
+  overflow: hidden;
+  box-shadow: 0 24px 60px -30px rgba(0, 0, 0, 0.9);
+}
+
+.mock__chrome {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.6rem 0.8rem;
+  border-bottom: 1px solid var(--line);
+  background: var(--slate);
+}
+
+.mock__dots {
+  display: inline-flex;
+  gap: 0.3rem;
+}
+.mock__dots i {
+  width: 7px;
+  height: 7px;
+  border-radius: var(--r-full);
+  background: var(--ink-4);
+}
+.mock__dots i:first-child {
+  background: var(--lime-dim);
+}
+
+.mock__chrome-title {
+  font-size: var(--t-micro);
+  color: var(--ink-3);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mock__body {
+  padding: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.mock__line {
+  font-size: var(--t-micro);
+  color: var(--ink-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mock__prompt {
+  color: var(--lime);
+  margin-right: 0.4rem;
+}
+
+.pipe__rows {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: var(--r-xs);
+  overflow: hidden;
+}
+
+.pipe__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-areas: 'name lag state' 'part lag state';
+  align-items: center;
+  gap: 0 0.5rem;
+  padding: 0.45rem 0.6rem;
+  background: var(--void);
+  font-size: var(--t-micro);
+}
+
+.pipe__name {
+  grid-area: name;
+  color: var(--ink);
+}
+.pipe__part {
+  grid-area: part;
+  color: var(--ink-4);
+  letter-spacing: 0.08em;
+}
+.pipe__lag {
+  grid-area: lag;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.pipe__state {
+  grid-area: state;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  white-space: nowrap;
+  padding: 0.18rem 0.45rem;
+  border-radius: var(--r-full);
+  border: 1px solid var(--line);
+  letter-spacing: 0.06em;
+}
+.pipe__state i {
+  width: 5px;
+  height: 5px;
+  border-radius: var(--r-full);
+  background: currentColor;
+}
+.pipe__state.is-ok {
+  color: var(--lime);
+  background: var(--lime-a);
+  border-color: transparent;
+}
+.pipe__state.is-warn {
+  color: var(--amber);
+  background: var(--amber-a);
+  border-color: transparent;
+}
+
+.pipe__bar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.pipe__bar-head {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--t-micro);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.pipe__bar-head span:last-child {
+  color: var(--lime);
+  font-variant-numeric: tabular-nums;
+}
+
+.pipe__track {
+  height: 5px;
+  border-radius: var(--r-full);
+  background: var(--glass-2);
+  overflow: hidden;
+}
+
+.pipe__fill {
+  width: 68%;
+  height: 100%;
+  border-radius: var(--r-full);
+  background: linear-gradient(90deg, var(--lime-dim), var(--lime));
+  box-shadow: 0 0 12px var(--lime-a);
+  position: relative;
+}
+/* A single travelling highlight reads as "still importing". */
+.pipe__fill::after {
+  content: '';
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: 34%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35));
+  animation: pipeSweep 2.2s var(--e-in-out) infinite;
+}
+
+@keyframes pipeSweep {
+  0% {
+    opacity: 0;
+    transform: translateX(-120%);
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(10%);
+  }
+}
+
+.pipe__caption {
+  font-size: var(--t-micro);
+  color: var(--ink-4);
+  font-variant-numeric: tabular-nums;
+}
+
+.pipe__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+  padding-top: 0.7rem;
+  border-top: 1px solid var(--line);
+}
+.pipe__stat {
+  font-size: var(--t-micro);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.pipe__stat b {
+  color: var(--ink);
+  font-weight: 500;
+  margin-right: 0.3rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* =========================================================
+   MOCK 2 — Instagram DM phone
+   ========================================================= */
+
+.mock--phone {
+  max-width: 19.5rem;
+}
+
+.phone {
+  position: relative;
+  border: 1px solid var(--line-2);
+  border-radius: 30px;
+  background: var(--obsidian);
+  padding: 1.1rem 0.7rem 0.9rem;
+  box-shadow: 0 30px 70px -34px rgba(0, 0, 0, 0.95), inset 0 0 0 4px var(--void);
+}
+
+.phone__pill {
+  position: absolute;
+  top: 0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3.4rem;
+  height: 0.3rem;
+  border-radius: var(--r-full);
+  background: var(--void);
+  border: 1px solid var(--line);
+}
+
+.phone__head {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.5rem 0.35rem 0.7rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.phone__avatar {
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: var(--r-full);
+  flex: none;
+  background: conic-gradient(from 210deg, var(--violet), var(--lime), var(--cyan), var(--violet));
+}
+
+.phone__who {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.phone__who b {
+  font-size: var(--t-xs);
+  font-weight: 600;
+  color: var(--ink);
+}
+.phone__who small {
+  font-size: var(--t-micro);
+  color: var(--ink-4);
+  letter-spacing: 0.08em;
+}
+
+.phone__thread {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.8rem 0.35rem 0.3rem;
+}
+
+.bubble {
+  max-width: 92%;
+  padding: 0.55rem 0.65rem;
+  border-radius: var(--r-md);
+  font-size: var(--t-micro);
+  line-height: 1.5;
+}
+
+.bubble--in {
+  align-self: flex-start;
+  background: var(--raised);
+  border: 1px solid var(--line);
+  border-bottom-left-radius: var(--r-xs);
+}
+
+.bubble--out {
+  align-self: flex-end;
+  background: var(--glass-2);
+  border: 1px solid var(--line-2);
+  border-bottom-right-radius: var(--r-xs);
+}
+
+.bubble--note {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--lime);
+  background: var(--lime-a);
+  border-color: transparent;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: var(--t-micro);
+}
+.bubble--note svg {
+  width: 0.8rem;
+  height: 0.8rem;
+  flex: none;
+}
+
+/* ---- reel card ---- */
+
+.reel {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.reel__frame {
+  position: relative;
+  width: 3.1rem;
+  height: 4.4rem;
+  flex: none;
+  border-radius: var(--r-sm);
+  background: linear-gradient(155deg, var(--elevated), var(--void) 72%),
+    radial-gradient(60% 40% at 30% 22%, var(--violet-a), transparent);
+  border: 1px solid var(--line-2);
+  overflow: hidden;
+}
+/* Suggestion of a figure in frame, built from two soft blocks. */
+.reel__frame::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 1.5rem;
+  height: 2.3rem;
+  border-radius: 0.5rem 0.5rem 0 0;
+  background: linear-gradient(180deg, var(--ink-4), transparent);
+  opacity: 0.8;
+}
+.reel__frame::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0.75rem;
+  transform: translateX(-50%);
+  width: 0.72rem;
+  height: 0.72rem;
+  border-radius: var(--r-full);
+  background: var(--ink-4);
+  opacity: 0.85;
+}
+
+.reel__play {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  z-index: 1;
+  width: 0;
+  height: 0;
+  border-left: 0.6rem solid var(--ink);
+  border-top: 0.38rem solid transparent;
+  border-bottom: 0.38rem solid transparent;
+  filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.6));
+}
+
+.reel__meta {
+  font-size: var(--t-micro);
+  line-height: 1.5;
+  color: var(--ink-3);
+  letter-spacing: 0.06em;
+}
+
+/* ---- product matches ---- */
+
+.matches {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.match {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.match__img {
+  width: 2rem;
+  height: 2rem;
+  flex: none;
+  border-radius: var(--r-xs);
+  border: 1px solid var(--line-2);
+}
+.match__img--a {
+  background: linear-gradient(140deg, var(--violet-dim), var(--void));
+}
+.match__img--b {
+  background: linear-gradient(140deg, var(--elevated), var(--slate));
+}
+.match__img--c {
+  background: linear-gradient(140deg, var(--ink-3), var(--slate));
+}
+
+.match__txt {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.match__txt b {
+  font-size: var(--t-micro);
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.match__txt small {
+  font-size: var(--t-micro);
+  color: var(--lime);
+  letter-spacing: 0.04em;
+}
+
+.phone__typing {
+  align-self: flex-start;
+  display: inline-flex;
+  gap: 0.22rem;
+  padding: 0.5rem 0.6rem;
+  border-radius: var(--r-md);
+  background: var(--raised);
+  border: 1px solid var(--line);
+}
+.phone__typing i {
+  width: 4px;
+  height: 4px;
+  border-radius: var(--r-full);
+  background: var(--ink-3);
+  animation: phoneBlink 1.3s var(--e-in-out) infinite;
+}
+.phone__typing i:nth-child(2) {
+  animation-delay: 0.16s;
+}
+.phone__typing i:nth-child(3) {
+  animation-delay: 0.32s;
+}
+
+@keyframes phoneBlink {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+}
+
+/* =========================================================
+   MOCK 3 — appointment booking card
+   ========================================================= */
+
+.mock--booking {
+  max-width: 23rem;
+}
+
+.book {
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-md);
+  background: var(--obsidian);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  box-shadow: 0 24px 60px -32px rgba(0, 0, 0, 0.9);
+}
+
+.book__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.book__doc {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-width: 0;
+}
+
+.book__avatar {
+  width: 2.1rem;
+  height: 2.1rem;
+  flex: none;
+  border-radius: var(--r-full);
+  background: linear-gradient(150deg, var(--cyan), var(--violet));
+  opacity: 0.75;
+}
+
+.book__who {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.book__who b {
+  font-size: var(--t-xs);
+  font-weight: 600;
+  color: var(--ink);
+}
+.book__who small {
+  font-size: var(--t-micro);
+  color: var(--ink-4);
+  letter-spacing: 0.06em;
+}
+
+.book__rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex: none;
+  font-size: var(--t-micro);
+  color: var(--amber);
+  padding: 0.22rem 0.45rem;
+  border-radius: var(--r-full);
+  background: var(--amber-a);
+}
+.book__rating svg {
+  width: 0.72rem;
+  height: 0.72rem;
+}
+
+.book__label {
+  font-size: var(--t-micro);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+
+.book__days {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+.book__day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.45rem 0.2rem;
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  background: var(--void);
+}
+.book__day-d {
+  font-size: var(--t-micro);
+  color: var(--ink-4);
+  letter-spacing: 0.1em;
+}
+.book__day-n {
+  font-size: var(--t-xs);
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+.book__day.is-active {
+  border-color: var(--lime);
+  background: var(--lime-a);
+}
+.book__day.is-active .book__day-d {
+  color: var(--lime-dim);
+}
+.book__day.is-active .book__day-n {
+  color: var(--lime);
+}
+
+.book__slots {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+.book__slot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.42rem 0.3rem;
+  font-size: var(--t-micro);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  background: var(--void);
+}
+.book__slot svg {
+  width: 0.62rem;
+  height: 0.62rem;
+  flex: none;
+}
+.book__slot.is-active {
+  color: var(--void);
+  background: var(--lime);
+  border-color: var(--lime);
+  font-weight: 600;
+  box-shadow: 0 0 18px var(--lime-a);
+}
+.book__slot.is-booked {
+  color: var(--ink-4);
+  text-decoration: line-through;
+  text-decoration-color: var(--ink-4);
+  background: var(--glass);
+}
+
+.book__confirm {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.15rem;
+  padding: 0.55rem 0.7rem;
+  border-radius: var(--r-sm);
+  border: 1px dashed var(--line-3);
+  font-size: var(--t-micro);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--lime);
+}
+.book__confirm svg {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+
+/* =========================================================
+   BREAKPOINTS
+   ========================================================= */
+
+@media (min-width: 640px) {
+  .proj__panel {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (min-width: 860px) {
+  .proj__panel {
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+  }
+  .proj__index {
+    position: absolute;
+    top: clamp(-0.4rem, -1vw, 0rem);
+    right: 0;
+    z-index: -1;
+  }
+  .proj__mock {
+    justify-content: flex-end;
+  }
+}
+
+/* ---------------- Pinned horizontal mode ----------------
+   Only at desktop width and only when motion is allowed; the
+   GSAP timeline that translates .proj__track lives behind the
+   same conditions (gsap.matchMedia + the reduced flag). */
+
+@media (min-width: 1024px) {
+  .proj:not(.proj--static) .proj__viewport {
+    height: 100vh;
+    min-height: 40rem;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .proj:not(.proj--static) .proj__track {
+    flex-direction: row;
+    align-items: center;
+    gap: clamp(2rem, 4vw, 4rem);
+    will-change: transform;
+  }
+
+  .proj:not(.proj--static) .proj__panel {
+    flex: none;
+    width: min(76rem, 86vw);
+    padding: clamp(2rem, 3vw, 3rem);
+  }
+
+  .proj:not(.proj--static) .proj__progress {
+    position: absolute;
+    left: var(--gutter);
+    right: var(--gutter);
+    bottom: clamp(1.5rem, 4vh, 3rem);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .proj__progress-count {
+    font-size: var(--t-micro);
+    letter-spacing: 0.16em;
+    color: var(--lime);
+    font-variant-numeric: tabular-nums;
+    flex: none;
+  }
+  .proj__progress-of {
+    color: var(--ink-4);
+  }
+
+  .proj__progress-bars {
+    display: inline-flex;
+    gap: 0.3rem;
+    flex: none;
+  }
+  .proj__progress-seg {
+    width: 1.5rem;
+    height: 2px;
+    background: var(--line-2);
+    border-radius: var(--r-full);
+    transition: background var(--d-fast) var(--e-out);
+  }
+  .proj__progress-seg.is-active {
+    background: var(--lime);
+  }
+
+  .proj__progress-rail {
+    position: relative;
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+    overflow: hidden;
+  }
+  .proj__progress-fill {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, var(--lime-dim), var(--lime));
+    transform-origin: 0 50%;
+    transform: scaleX(0);
+  }
+}
+
+/* ---------------- Reduced motion ---------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .pipe__fill::after,
+  .phone__typing i {
+    animation: none;
+  }
+  .phone__typing i {
+    opacity: 0.6;
+  }
+  .proj__viewport {
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    display: block !important;
+  }
+  .proj__track {
+    flex-direction: column !important;
+    transform: none !important;
+  }
+  .proj__panel {
+    width: auto !important;
+  }
+  .proj__progress {
+    display: none !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .proj__panel {
+    padding: 1.1rem;
+    border-radius: var(--r-md);
+  }
+  .proj__metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  /* Three metrics in a two-column grid leave a visible hole; let a lone
+     trailing cell run the full width instead. */
+  .proj__metric:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+}

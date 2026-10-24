@@ -1,0 +1,131 @@
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.foot {
+  position: relative;
+  z-index: var(--z-content);
+  border-top: 1px solid var(--line);
+  padding-block: clamp(2.5rem, 5vw, 4rem);
+  background: linear-gradient(180deg, transparent, rgba(245, 243, 238, 0.012));
+}
+
+.foot__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(1.25rem, 4vw, 3rem);
+  flex-wrap: wrap;
+}
+
+/* ---------------- brand ---------------- */
+
+.foot__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.foot__mark {
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  flex: none;
+  font-size: 0.85rem;
+  letter-spacing: 0;
+  color: var(--lime);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-sm);
+  background: var(--glass);
+}
+.foot__name {
+  display: grid;
+  gap: 0.15rem;
+}
+.foot__name strong {
+  font-size: var(--t-sm);
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.foot__role {
+  font-size: var(--t-micro);
+  letter-spacing: 0.08em;
+  color: var(--ink-3);
+}
+
+/* ---------------- colophon + legal ---------------- */
+
+.foot__colophon,
+.foot__legal {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  font-size: var(--t-micro);
+  letter-spacing: 0.06em;
+  color: var(--ink-4);
+}
+.foot__colophon-label {
+  color: var(--ink-3);
+  margin-right: 0.1rem;
+}
+.foot__colophon span:not(.foot__colophon-label):not(.foot__dot) {
+  color: var(--ink-3);
+}
+
+/* Separator drawn rather than typed, so it never gets selected or read. */
+.foot__dot {
+  display: inline-block;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--ink-4);
+  margin-inline: 0.15rem;
+}
+
+@media (max-width: 860px) {
+  .foot__inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* ---------------- back to top ---------------- */
+
+.foot__top {
+  position: fixed;
+  right: clamp(1rem, 2.5vw, 2rem);
+  bottom: clamp(1rem, 2.5vw, 2rem);
+  z-index: var(--z-rail);
+  display: grid;
+  place-items: center;
+  width: 2.9rem;
+  height: 2.9rem;
+  color: var(--ink-2);
+  background: var(--raised);
+  border: 1px solid var(--line-2);
+  border-radius: 50%;
+  backdrop-filter: blur(var(--blur));
+  -webkit-backdrop-filter: blur(var(--blur));
+  opacity: 0;
+  transform: translateY(14px) scale(0.9);
+  pointer-events: none;
+  transition: opacity var(--d-base) var(--e-out), transform var(--d-base) var(--e-out),
+    color var(--d-fast) var(--e-out), background var(--d-fast) var(--e-out),
+    border-color var(--d-fast) var(--e-out);
+}
+.foot__top.is-visible {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+.foot__top:hover {
+  color: var(--void);
+  background: var(--lime);
+  border-color: var(--lime);
+}
+.foot__top svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
