@@ -1,189 +1,239 @@
-import { useRef } from 'react';
-import TechOrbit from './TechOrbit.jsx';
-import { 
-  FiZap, FiCpu, FiSettings, FiLayers, 
-  FiBriefcase, FiMapPin, FiAward, FiTrendingUp 
-} from 'react-icons/fi';
+import { useEffect, useRef, useState } from 'react';
+import SectionHeader, { SectionTitle, Accent } from './SectionHeader.jsx';
+import { gsap } from '../lib/gsap.js';
+import { useApp } from '../context/AppContext.jsx';
+import { useSpotlight } from '../hooks/useInteractions.js';
+import { useLineReveal } from '../hooks/useReveal.js';
+import { PERSON, PILLARS, FACTS, NOW, PHILOSOPHY } from '../data/content.js';
+import '../styles/about.css';
 
-export default function About() {
+/* ---------------------------------------------------------
+   The code card. A real-looking source file beats a stock
+   photo, and it tilts toward the pointer so it reads as an
+   object sitting on the page rather than an image of one.
+   --------------------------------------------------------- */
+function CodeCard({ reduced }) {
+  const wrapRef = useRef(null);
   const cardRef = useRef(null);
-  const innerRef = useRef(null);
 
-  const handleMove = (e) => {
+  useEffect(() => {
+    const wrap = wrapRef.current;
     const card = cardRef.current;
-    const inner = innerRef.current;
-    if (!card || !inner) return;
-    const rect = card.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    inner.style.transform = `rotateY(${x * 12}deg) rotateX(${-y * 12}deg) translateZ(20px)`;
-  };
-  const handleLeave = () => {
-    if (innerRef.current) innerRef.current.style.transform = '';
-  };
+    if (!wrap || !card || reduced) return;
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+    const rx = gsap.quickTo(card, 'rotateX', { duration: 0.6, ease: 'power3.out' });
+    const ry = gsap.quickTo(card, 'rotateY', { duration: 0.6, ease: 'power3.out' });
+
+    const onMove = (e) => {
+      const r = wrap.getBoundingClientRect();
+      // Normalise pointer position to -0.5..0.5 within the card, then
+      // map to a shallow tilt. Anything past ~10deg starts to look like
+      // a gimmick rather than depth.
+      ry(((e.clientX - r.left) / r.width - 0.5) * 14);
+      rx(-((e.clientY - r.top) / r.height - 0.5) * 14);
+    };
+    const onLeave = () => {
+      rx(0);
+      ry(0);
+    };
+
+    wrap.addEventListener('pointermove', onMove);
+    wrap.addEventListener('pointerleave', onLeave);
+    return () => {
+      wrap.removeEventListener('pointermove', onMove);
+      wrap.removeEventListener('pointerleave', onLeave);
+      gsap.killTweensOf(card);
+    };
+  }, [reduced]);
 
   return (
-    <section className="about" id="about">
-      <div className="section-header">
-        <span className="section-num">01</span>
-        <span className="section-line"></span>
-        <span className="section-tag">About</span>
-      </div>
-
-      <div className="about-grid">
-        <div className="about-text">
-          <h2 className="section-title reveal-up">
-            I craft <em className="serif gradient-text">scalable</em> systems
-            <span className="br-md"> </span>
-            and pixel-perfect <em className="serif gradient-text">experiences</em>.
-          </h2>
-
-          <div className="about-bento reveal-up">
-            <div className="bento-item glass-card" data-cursor="hover">
-              <div className="bento-icon"><FiZap /></div>
-              <div className="bento-text">
-                <strong>Performance & Scale</strong>
-                <span>Shipped 100+ REST APIs and Kafka pipelines. Cut P99 latencies by 50%+ via Redis, query indexing, and connection pools.</span>
-              </div>
-            </div>
-
-            <div className="bento-item glass-card" data-cursor="hover">
-              <div className="bento-icon"><FiCpu /></div>
-              <div className="bento-text">
-                <strong>AI-Powered Pipelines</strong>
-                <span>Building agentic workflows with LangChain & LLMs, focusing on token optimization, context chains, and multi-provider APIs.</span>
-              </div>
-            </div>
-
-            <div className="bento-item glass-card" data-cursor="hover">
-              <div className="bento-icon"><FiSettings /></div>
-              <div className="bento-text">
-                <strong>End-to-End Ownership</strong>
-                <span>Working across NestJS, FastAPI, microservices, observability, and building pixel-perfect Next.js frontends.</span>
-              </div>
-            </div>
-
-            <div className="bento-item glass-card" data-cursor="hover">
-              <div className="bento-icon"><FiLayers /></div>
-              <div className="bento-text">
-                <strong>Algorithmic Foundation</strong>
-                <span>Solved 500+ DSA problems (LeetCode/CodeChef) keeping system-design and algorithmic trade-offs sharp.</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="about-meta reveal-up">
-            <div className="about-meta-card">
-              <span className="meta-icon"><FiBriefcase /></span>
-              <span className="meta-label">Recent Role</span>
-              <span className="meta-value">Associate Software Dev<br />@ Primathon Technology<br /><em style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>till June 2026</em></span>
-            </div>
-            <div className="about-meta-card">
-              <span className="meta-icon"><FiMapPin /></span>
-              <span className="meta-label">Based In</span>
-              <span className="meta-value">India<br />Working Globally</span>
-            </div>
-            <div className="about-meta-card">
-              <span className="meta-icon"><FiAward /></span>
-              <span className="meta-label">Education</span>
-              <span className="meta-value">B.Tech, SGSITS Indore<br />Electrical Engineering</span>
-            </div>
-          </div>
+    <div className="code" ref={wrapRef}>
+      <div className="code__card" ref={cardRef}>
+        <div className="code__bar">
+          <span className="code__dots" aria-hidden="true">
+            <i />
+            <i />
+            <i />
+          </span>
+          <span className="code__file mono">~/engineer.ts</span>
+          <span className="code__badge mono">TS</span>
         </div>
+        <pre className="code__body mono" aria-label="A TypeScript object describing Mohit Tantway">
+          <code>
+            <span className="c-kw">const</span> <span className="c-var">mohit</span>
+            {' = {'}
+            {'\n  '}
+            <span className="c-prop">name</span>
+            {': '}
+            <span className="c-str">'Mohit Tantway'</span>
+            {',\n  '}
+            <span className="c-prop">role</span>
+            {': '}
+            <span className="c-str">'Full-Stack · Systems'</span>
+            {',\n  '}
+            <span className="c-prop">stack</span>
+            {': ['}
+            {'\n    '}
+            <span className="c-str">'NestJS'</span>
+            {', '}
+            <span className="c-str">'Kafka'</span>
+            {', '}
+            <span className="c-str">'Redis'</span>
+            {',\n    '}
+            <span className="c-str">'Next.js'</span>
+            {', '}
+            <span className="c-str">'LangChain'</span>
+            {',\n    '}
+            <span className="c-str">'Trino'</span>
+            {', '}
+            <span className="c-str">'Docker'</span>
+            {'\n  ],\n  '}
+            <span className="c-prop">p99</span>
+            {': '}
+            <span className="c-num">-60</span>
+            <span className="c-cmt"> // percent</span>
+            {',\n  '}
+            <span className="c-prop">shipping</span>
+            {': '}
+            <span className="c-bool">true</span>
+            {',\n  '}
+            <span className="c-prop">available</span>
+            {': '}
+            <span className="c-bool">true</span>
+            {',\n};'}
+          </code>
+        </pre>
+      </div>
+    </div>
+  );
+}
 
-        <div className="about-visual">
-          <div className="card-3d" ref={cardRef} onMouseMove={handleMove} onMouseLeave={handleLeave}>
-            <div className="card-3d-inner" ref={innerRef}>
-              <div className="card-header">
-                <div className="card-dots"><span></span><span></span><span></span></div>
-                <span className="card-title">~/about.ts</span>
-                <div className="card-actions">
-                  <span className="card-action-dot"></span>
-                </div>
-              </div>
-              <pre className="code">
-                {``}<span className="c-key">const</span> <span className="c-var">mohit</span> = {'{'}
-                {`  `}<span className="c-prop">name</span>: <span className="c-str">'Mohit Tantway'</span>,
-                {`  `}<span className="c-prop">role</span>: <span className="c-str">'Full-Stack Developer'</span>,
-                {`  `}<span className="c-prop">stack</span>: [
-                {`    `}<span className="c-str">'NestJS'</span>, <span className="c-str">'FastAPI'</span>,
-                {`    `}<span className="c-str">'Next.js'</span>, <span className="c-str">'Kafka'</span>,
-                {`    `}<span className="c-str">'LangChain'</span>, <span className="c-str">'Redis'</span>,
-                {`    `}<span className="c-str">'DynamoDB'</span>, <span className="c-str">'Docker'</span>
-                {`  `}],
-                {`  `}<span className="c-prop">focus</span>: <span className="c-str">'AI · Scale · DX'</span>,
-                {`  `}<span className="c-prop">shipping</span>: <span className="c-bool">true</span>,
-                {`  `}<span className="c-prop">available</span>: <span className="c-bool">true</span>,
-                {'}'};
-              </pre>
-            </div>
-          </div>
+/* ---------------------------------------------------------
+   About
+   --------------------------------------------------------- */
+export default function About() {
+  const { reduced } = useApp();
+  const titleRef = useRef(null);
+  const spotlight = useSpotlight();
+  const [openPillar, setOpenPillar] = useState(PILLARS[0].key);
 
-          <div className="now-card glass-card">
-            <div className="now-card-head">
-              <span className="now-pulse"></span>
-              <span className="now-label">Now Shipping</span>
-              <span className="now-time">live</span>
-            </div>
-            <ul className="now-list">
-              <li>
-                <span className="now-icon"><FiZap /></span>
-                <div>
-                  <div className="now-title">Scale-Ops v2 — Import Pipeline</div>
-                  <div className="now-sub">Kafka · BullMQ · Trino streaming</div>
-                </div>
-                <span className="now-badge running">in progress</span>
-              </li>
-              <li>
-                <span className="now-icon"><FiCpu /></span>
-                <div>
-                  <div className="now-title">LLM-Powered Pipelines</div>
-                  <div className="now-sub">LangChain · context chains · token optimization</div>
-                </div>
-                <span className="now-badge exploring">shipping</span>
-              </li>
-              <li>
-                <span className="now-icon"><FiTrendingUp /></span>
-                <div>
-                  <div className="now-title">P99 Latency Tuning</div>
-                  <div className="now-sub">indexes · Redis · connection pools</div>
-                </div>
-                <span className="now-badge shipped">shipped</span>
-              </li>
-            </ul>
-          </div>
-          <TechOrbit />
+  useLineReveal(titleRef);
 
-          <div className="quote-card glass-card">
-            <div className="quote-mark">"</div>
-            <p>
-              Great software isn't shipped by writing more code — it's shipped by
-              <em> understanding the system end-to-end</em>, from the database query
-              all the way to the pixel.
+  return (
+    <section className="section about" id="about">
+      <div className="shell">
+        <SectionHeader num="01" label="About" />
+
+        <div className="about__grid">
+          {/* ---------------- left: the argument ---------------- */}
+          <div className="about__main">
+            <SectionTitle className="about__title">
+              <span ref={titleRef}>
+                I build systems that hold up at <Accent volt>scale</Accent>.
+              </span>
+            </SectionTitle>
+
+            <p className="lead about__lead reveal">
+              Most of my work lives where correctness meets throughput — the layer where a design
+              decision shows up as a latency number. I like that layer. {' '}
+              <em>It keeps you honest.</em>
             </p>
-            <div className="quote-sig">— My working philosophy</div>
+
+            {/* Pillars as an exclusive accordion: one open at a time, so the
+                column stays scannable instead of becoming a wall of prose. */}
+            <ul className="about__pillars" data-reveal-stagger>
+              {PILLARS.map((p, i) => {
+                const open = openPillar === p.key;
+                return (
+                  <li
+                    key={p.key}
+                    className={`about__pillar panel panel-lit reveal${open ? ' is-open' : ''}`}
+                    onMouseMove={spotlight}
+                  >
+                    <button
+                      type="button"
+                      className="about__pillar-head"
+                      aria-expanded={open}
+                      aria-controls={`pillar-${p.key}`}
+                      onClick={() => setOpenPillar(open ? null : p.key)}
+                      data-cursor="hover"
+                    >
+                      <span className="about__pillar-num mono">
+                        {String(i + 1).padStart(2, '0')}
+                      </span>
+                      <span className="about__pillar-kicker">{p.kicker}</span>
+                      <span className="about__pillar-metric mono">
+                        <strong>{p.metric}</strong>
+                        <small>{p.metricLabel}</small>
+                      </span>
+                      <span className="about__pillar-chevron" aria-hidden="true" />
+                    </button>
+                    <div className="about__pillar-body" id={`pillar-${p.key}`} role="region">
+                      {/* The clipping wrapper has to sit between the 0fr grid
+                          row and the padded paragraph — padding on the grid
+                          item itself survives the collapse and leaks a sliver
+                          of text. */}
+                      <div className="about__pillar-clip">
+                        <p>{p.body}</p>
+                      </div>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+
+            {/* ---------------- facts ---------------- */}
+            <dl className="about__facts" data-reveal-stagger>
+              {FACTS.map((f) => (
+                <div className="about__fact reveal" key={f.label}>
+                  <dt className="label">{f.label}</dt>
+                  <dd>
+                    <span className="about__fact-value">{f.value}</span>
+                    <span className="about__fact-sub mono">{f.sub}</span>
+                  </dd>
+                </div>
+              ))}
+            </dl>
           </div>
 
-          <div className="signal-card glass-card">
-            <div className="signal-head">
-              <span className="signal-label">Recent Signal</span>
-              <span className="signal-dot"></span>
+          {/* ---------------- right: the instrument rail ---------------- */}
+          <aside className="about__rail" aria-label="Current work and philosophy">
+            <div className="about__sticky">
+              <div className="reveal">
+                <CodeCard reduced={reduced} />
+              </div>
+
+              <div className="now panel reveal">
+                <div className="now__head">
+                  <span className="now__pulse" aria-hidden="true" />
+                  <span className="label">Now shipping</span>
+                  <span className="now__live mono">live</span>
+                </div>
+                <ul className="now__list">
+                  {NOW.map((n) => (
+                    <li className="now__item" key={n.title}>
+                      <div className="now__text">
+                        <span className="now__title">{n.title}</span>
+                        <span className="now__sub mono">{n.sub}</span>
+                      </div>
+                      <span className={`now__state now__state--${n.state} mono`}>{n.state}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <figure className="quote panel reveal">
+                <span className="quote__mark serif" aria-hidden="true">
+                  &ldquo;
+                </span>
+                <blockquote>{PHILOSOPHY.quote}</blockquote>
+                <figcaption className="quote__cite mono">
+                  — {PERSON.name.split(' ')[0]}'s {PHILOSOPHY.attribution}
+                </figcaption>
+              </figure>
             </div>
-            <div className="signal-grid">
-              <div className="signal-item">
-                <div className="signal-val">2,847</div>
-                <div className="signal-key">commits this year</div>
-              </div>
-              <div className="signal-item">
-                <div className="signal-val">500+</div>
-                <div className="signal-key">DSA problems solved</div>
-              </div>
-              <div className="signal-item">
-                <div className="signal-val">∞</div>
-                <div className="signal-key">cups of chai</div>
-              </div>
-            </div>
-          </div>
+          </aside>
         </div>
       </div>
     </section>

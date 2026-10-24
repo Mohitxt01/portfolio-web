@@ -1,0 +1,366 @@
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.hero {
+  position: relative;
+  z-index: var(--z-content);
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-block: clamp(6rem, 11vh, 8.5rem) clamp(2.5rem, 5vh, 4rem);
+}
+
+.hero__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* ---------------- status chrome ---------------- */
+
+.hero__chrome {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin-bottom: clamp(1.75rem, 4vh, 3rem);
+  font-family: var(--mono);
+  font-size: var(--t-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  flex-wrap: wrap;
+}
+.hero__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: var(--ink-2);
+}
+.hero__pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--lime);
+  box-shadow: 0 0 0 0 var(--lime);
+  animation: pulse 2.4s var(--e-out) infinite;
+}
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(200, 255, 0, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 9px rgba(200, 255, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(200, 255, 0, 0);
+  }
+}
+.hero__chrome-sep {
+  width: 2.5rem;
+  height: 1px;
+  background: var(--line-2);
+}
+.hero__clock {
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------------- headline ---------------- */
+
+.hero__title {
+  /* Hidden until SplitText has run, so characters never flash unsplit.
+     The entrance timeline sets opacity to 1; the js-ready fallback
+     below covers the case where JS never arrives. */
+  opacity: 0;
+  font-size: var(--t-display);
+  margin-bottom: clamp(0.9rem, 1.8vh, 1.4rem);
+  max-width: 18ch;
+}
+html:not(.js-ready) .hero__title,
+.reduced .hero__title {
+  opacity: 1;
+}
+
+.hero__title > span {
+  display: block;
+}
+.hero__title .serif {
+  text-transform: none;
+  font-size: 1.1em;
+  letter-spacing: -0.015em;
+  padding-right: 0.08em;
+}
+.hero__title-l2 {
+  display: flex !important;
+  align-items: baseline;
+  gap: 0.22em;
+}
+.hero__title-l3 {
+  /* Optical indent: the third line reads as a continuation rather than
+     a new block, and it opens space for the hero stats on the right. */
+  margin-left: clamp(0rem, 4vw, 3.5rem);
+}
+.hero__amp {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 0.5em;
+  color: var(--lime);
+  transform: translateY(-0.15em);
+  display: inline-block;
+}
+
+/* SplitText output */
+.hero__line {
+  overflow: hidden;
+  display: block;
+  padding-bottom: 0.06em;
+}
+/* Each character becomes its own inline-block, which means a line can
+   otherwise break between ANY two letters — "FULL-STAC / K". Keeping the
+   word wrapper unbreakable restores normal word-level wrapping. */
+.hero__word {
+  display: inline-block;
+  white-space: nowrap;
+}
+.hero__title {
+  word-break: normal;
+  overflow-wrap: normal;
+}
+.hero__char {
+  display: inline-block;
+  will-change: transform, opacity;
+  transform-origin: 50% 100%;
+  transition: color var(--d-fast) var(--e-out);
+}
+/* Per-character hover: the headline responds to being touched. */
+@media (hover: hover) and (pointer: fine) {
+  .hero__char:hover {
+    color: var(--lime);
+  }
+}
+
+/* ---------------- scrambling role line ---------------- */
+
+.hero__role {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: var(--t-sm);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--lime);
+  margin-bottom: clamp(1rem, 2vh, 1.5rem);
+  min-height: 1.5em;
+}
+.hero__role-caret {
+  color: var(--ink-4);
+  font-size: 0.8em;
+}
+
+/* ---------------- lead ---------------- */
+
+.hero__lead {
+  max-width: 60ch;
+  margin-bottom: clamp(1.4rem, 2.6vh, 2rem);
+}
+
+/* ---------------- actions ---------------- */
+
+.hero__cta {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+  margin-bottom: clamp(1.75rem, 3.6vh, 2.75rem);
+}
+
+.hero__hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: 0.5rem;
+  font-family: var(--mono);
+  font-size: var(--t-micro);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  transition: color var(--d-fast) var(--e-out);
+}
+.hero__hint:hover {
+  color: var(--ink);
+}
+.hero__hint svg {
+  width: 0.95em;
+  height: 0.95em;
+}
+.hero__hint kbd {
+  font-size: 0.85em;
+}
+@media (max-width: 560px) {
+  .hero__hint {
+    display: none; /* no ⌘K on touch — don't advertise it */
+  }
+}
+
+/* ---------------- stats ---------------- */
+
+.hero__stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(0.5rem, 2vw, 2rem);
+  border-top: 1px solid var(--line);
+  padding-top: clamp(1.25rem, 2.5vw, 2rem);
+  max-width: 1100px;
+}
+.hero__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  position: relative;
+}
+/* Hairline dividers between cells, drawn only in the gaps. */
+.hero__stat + .hero__stat::before {
+  content: '';
+  position: absolute;
+  left: calc(clamp(0.5rem, 2vw, 2rem) / -2);
+  top: 0.15em;
+  bottom: 0.3em;
+  width: 1px;
+  background: var(--line);
+}
+.hero__stat-num {
+  font-size: clamp(1.5rem, 3.4vw, 2.9rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.045em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.hero__stat-label {
+  font-size: var(--t-xs);
+  font-weight: 500;
+  color: var(--ink-2);
+}
+.hero__stat-sub {
+  font-family: var(--mono);
+  font-size: var(--t-micro);
+  color: var(--ink-3);
+  letter-spacing: 0.03em;
+}
+
+@media (max-width: 760px) {
+  .hero__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem 1rem;
+  }
+  /* The 2-col layout makes the 3rd cell a row start — its divider
+     would float in open space, so only divide within a row. */
+  .hero__stat:nth-child(odd)::before {
+    display: none;
+  }
+}
+
+/* ---------------- base chrome ---------------- */
+
+.hero__foot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: clamp(1.25rem, 3vh, 2.25rem);
+}
+
+.hero__scroll {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  color: var(--ink-3);
+  transition: color var(--d-fast) var(--e-out);
+}
+.hero__scroll:hover {
+  color: var(--ink);
+}
+.hero__scroll svg {
+  width: 0.9em;
+  height: 0.9em;
+}
+.hero__scroll-rail {
+  position: relative;
+  width: clamp(2.5rem, 7vw, 5rem);
+  height: 1px;
+  background: var(--line-2);
+  overflow: hidden;
+}
+/* A light runs down the rail, pointing the way. */
+.hero__scroll-rail::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  width: 40%;
+  background: var(--lime);
+  animation: railRun 2.6s var(--e-in-out) infinite;
+}
+@keyframes railRun {
+  0% {
+    transform: translateX(-100%);
+  }
+  60%,
+  100% {
+    transform: translateX(250%);
+  }
+}
+
+.hero__socials {
+  display: flex;
+  gap: 1.5rem;
+  font-family: var(--mono);
+  font-size: var(--t-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.hero__socials a {
+  position: relative;
+  color: var(--ink-3);
+  transition: color var(--d-fast) var(--e-out);
+}
+.hero__socials a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 1px;
+  background: var(--lime);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--d-base) var(--e-out);
+}
+.hero__socials a:hover {
+  color: var(--ink);
+}
+.hero__socials a:hover::after {
+  transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__pulse,
+  .hero__scroll-rail::after {
+    animation: none;
+  }
+  .hero__scroll-rail::after {
+    transform: none;
+    width: 100%;
+    opacity: 0.4;
+  }
+}
+
+@media (max-width: 620px) {
+  .hero__foot {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+}

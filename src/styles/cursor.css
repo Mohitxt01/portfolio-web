@@ -1,0 +1,76 @@
+/* =========================================================
+   CURSOR
+   ========================================================= */
+
+.cursor {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-cursor);
+  pointer-events: none;
+}
+
+.cursor__dot,
+.cursor__ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.cursor__dot {
+  width: 5px;
+  height: 5px;
+  border-radius: var(--r-full);
+  background: var(--ink);
+}
+
+.cursor__ring {
+  display: grid;
+  place-items: center;
+}
+
+/* `difference` is the whole trick: the ring inverts against whatever
+   surface it crosses, so it never vanishes and never shouts. */
+.cursor__shape {
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--ink);
+  border-radius: var(--r-full);
+  mix-blend-mode: difference;
+  will-change: transform;
+  transition: border-color var(--d-fast) var(--e-out), background var(--d-fast) var(--e-out);
+}
+
+.cursor__shape[data-state='view'],
+.cursor__shape[data-state='snap'] {
+  border-color: var(--lime);
+}
+
+.cursor__shape[data-state='text'] {
+  background: var(--ink);
+  border-color: transparent;
+}
+
+.cursor__label {
+  font-size: var(--t-micro);
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: var(--ink);
+  white-space: nowrap;
+  user-select: none;
+}
+
+/* The component does not mount on coarse pointers or under reduced
+   motion — these are belt and braces. */
+@media (hover: none), (pointer: coarse) {
+  .cursor {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor {
+    display: none;
+  }
+}

@@ -1,0 +1,212 @@
+/* =========================================================
+   CONTACT — the closing statement.
+   Biggest type on the page after the hero; everything else
+   stays quiet so the email is the loudest thing in view.
+   ========================================================= */
+
+.contact {
+  padding-bottom: clamp(5rem, 10vh, 8rem);
+}
+
+/* ---------------- headline ---------------- */
+
+.contact__head {
+  font-size: var(--t-display);
+  max-width: 16ch;
+  margin-bottom: clamp(2rem, 4vh, 3rem);
+  /* Characters are transformed individually by the pointer loop; a
+     containing block keeps those transforms from forcing page-wide
+     layout recalcs. */
+  contain: layout style;
+}
+
+/* Words stay unbreakable so the per-char repulsion never splits one
+   mid-word across a line break. */
+.contact__w {
+  display: inline-block;
+  white-space: nowrap;
+}
+.contact__ch {
+  display: inline-block;
+  will-change: transform;
+}
+
+.contact__head .serif {
+  text-transform: none;
+  font-size: 1.1em;
+  letter-spacing: -0.02em;
+}
+
+/* The accent word is split into inline-block characters, and each one
+   paints its own box — so `background-clip: text` on the parent clips
+   against a box the glyphs no longer occupy and the word renders blank.
+   A solid fill is the fix, and at this size flat acid lime actually
+   reads more confident than a gradient would. */
+.contact__head .volt {
+  background: none;
+  color: var(--lime);
+  -webkit-text-fill-color: var(--lime);
+}
+
+/* ---------------- availability chip ---------------- */
+
+.contact__avail {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.95rem;
+  margin-bottom: clamp(1.75rem, 3vh, 2.5rem);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-full);
+  background: var(--glass);
+}
+.contact__pulse {
+  width: 6px;
+  height: 6px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--lime);
+  animation: pulse 2.4s var(--e-out) infinite;
+}
+.contact__availtext {
+  font-size: var(--t-micro);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.contact__time {
+  color: var(--lime);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------------- the email ---------------- */
+
+.contact__mail {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.75rem, 2vw, 1.5rem);
+  flex-wrap: wrap;
+  padding-bottom: clamp(2rem, 4vw, 3rem);
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+  border-bottom: 1px solid var(--line);
+}
+
+.contact__maillink {
+  position: relative;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(1.25rem, 4.2vw, 3rem);
+  letter-spacing: -0.035em;
+  color: var(--ink);
+  /* Long address, narrow phone — let it break rather than overflow. */
+  word-break: break-all;
+  background-image: linear-gradient(var(--lime), var(--lime));
+  background-repeat: no-repeat;
+  background-size: 0% 2px;
+  background-position: 0 100%;
+  transition: color var(--d-base) var(--e-out), background-size var(--d-slow) var(--e-out);
+}
+.contact__maillink:hover,
+.contact__maillink:focus-visible {
+  color: var(--lime);
+  background-size: 100% 2px;
+}
+
+.contact__copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex: none;
+  padding: 0.55rem 0.95rem;
+  font-size: var(--t-micro);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-full);
+  transition: color var(--d-fast) var(--e-out), border-color var(--d-fast) var(--e-out),
+    background var(--d-fast) var(--e-out);
+}
+.contact__copy:hover {
+  color: var(--void);
+  background: var(--lime);
+  border-color: var(--lime);
+}
+.contact__copy svg {
+  width: 0.95em;
+  height: 0.95em;
+}
+
+/* ---------------- cards ---------------- */
+
+.contact__cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+.contact__card {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas:
+    'icon label go'
+    'icon value value';
+  align-items: center;
+  gap: 0.15rem 0.9rem;
+  padding: 1.15rem 1.25rem;
+  border-radius: var(--r-md);
+  height: 100%;
+}
+.contact__card:hover {
+  transform: translateY(-2px);
+}
+
+.contact__cardicon {
+  grid-area: icon;
+  width: 1.4rem;
+  height: 1.4rem;
+  color: var(--card-accent, var(--lime));
+}
+.contact__cardlabel {
+  grid-area: label;
+}
+.contact__cardvalue {
+  grid-area: value;
+  font-size: var(--t-sm);
+  color: var(--ink);
+  word-break: break-all;
+}
+.contact__cardgo {
+  grid-area: go;
+  width: 1rem;
+  height: 1rem;
+  color: var(--ink-4);
+  transition: transform var(--d-base) var(--e-spring), color var(--d-fast) var(--e-out);
+}
+.contact__card:hover .contact__cardgo {
+  color: var(--card-accent, var(--lime));
+  transform: translate(3px, -3px);
+}
+
+/* ---------------- location ---------------- */
+
+.contact__loc {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: var(--t-micro);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+.contact__loc svg {
+  width: 0.95em;
+  height: 0.95em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact__pulse {
+    animation: none;
+  }
+}

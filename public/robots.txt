@@ -1,0 +1,24 @@
+# https://mohittantway.vercel.app/robots.txt
+
+User-agent: *
+Allow: /
+
+# AI answer engines are a real referral source for a portfolio now —
+# being cited by them is upside, not risk. Opt in explicitly, since
+# several of these default to excluded when unlisted.
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://mohittantway.vercel.app/sitemap.xml

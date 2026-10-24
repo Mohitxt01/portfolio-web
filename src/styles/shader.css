@@ -1,0 +1,68 @@
+/* =========================================================
+   ATMOSPHERE LAYER
+   ========================================================= */
+
+.field {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-shader);
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.field__gl {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+/* Context creation failed after mount — reveal the static layer instead. */
+.field__gl.is-dead {
+  display: none;
+}
+
+/* Static fallback. Composed to echo the shader: violet plumes off-centre,
+   a cyan undertone, obsidian everywhere else. */
+.field__static {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(60% 50% at 72% 18%, rgba(110, 86, 248, 0.18), transparent 70%),
+    radial-gradient(45% 40% at 18% 72%, rgba(79, 216, 232, 0.08), transparent 70%),
+    radial-gradient(35% 30% at 50% 50%, rgba(200, 255, 0, 0.035), transparent 70%),
+    var(--void);
+}
+
+/* Engineering grid — faint, and it fades as you scroll away from the hero.
+   Masked radially so it never reaches the edges and boxes the layout in. */
+.field__grid {
+  position: absolute;
+  inset: -1px;
+  background-image: linear-gradient(to right, var(--line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--line) 1px, transparent 1px);
+  background-size: clamp(48px, 6vw, 86px) clamp(48px, 6vw, 86px);
+  opacity: calc(0.5 - var(--scroll-progress) * 0.35);
+  -webkit-mask-image: radial-gradient(ellipse 85% 75% at 50% 35%, #000 20%, transparent 78%);
+  mask-image: radial-gradient(ellipse 85% 75% at 50% 35%, #000 20%, transparent 78%);
+}
+
+/* A pointer-tracked void that keeps the centre of attention dark enough
+   for type. --mx/--my are published by App on pointermove. */
+.field__vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+      620px circle at var(--mx) var(--my),
+      transparent 0%,
+      rgba(6, 6, 8, 0.28) 55%,
+      rgba(6, 6, 8, 0.62) 100%
+    ),
+    linear-gradient(180deg, rgba(6, 6, 8, 0.55) 0%, transparent 22%, transparent 72%, var(--void) 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .field__grid {
+    opacity: 0.22;
+  }
+}

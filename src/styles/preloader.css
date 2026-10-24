@@ -1,0 +1,168 @@
+/* =========================================================
+   PRELOADER
+   ========================================================= */
+
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-preloader);
+  background: var(--void);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  /* Declared here too so the very first paint is already clipped
+     correctly even before GSAP runs its first frame. */
+  clip-path: inset(0% 0% 0% 0%);
+}
+
+/* A faint instrument grid, not a decorative pattern. */
+.preloader::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(90deg, var(--line) 1px, transparent 1px),
+    linear-gradient(var(--line) 1px, transparent 1px);
+  background-size: 7rem 7rem;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.preloader::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(70% 60% at 50% 120%, var(--lime-a), transparent 70%);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.pre__inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding: var(--gutter);
+  padding-bottom: clamp(2.5rem, 7vh, 5rem);
+  display: grid;
+  gap: clamp(1.5rem, 4vh, 3rem);
+}
+
+.pre__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.9rem;
+}
+
+.pre__tag {
+  font-size: var(--t-micro);
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--lime);
+}
+.pre__tag--dim {
+  color: var(--ink-4);
+}
+
+/* ---------- name ---------- */
+
+.pre__namewrap {
+  overflow: hidden;
+  padding-bottom: 0.06em;
+}
+
+.pre__name {
+  font-size: clamp(2rem, 7.4vw, 6.5rem);
+  color: var(--ink);
+  margin: 0;
+}
+
+/* ---------- boot log ---------- */
+
+.pre__log {
+  display: grid;
+  gap: 0.34rem;
+  font-size: var(--t-xs);
+  color: var(--ink-3);
+}
+
+.pre__line {
+  display: grid;
+  grid-template-columns: 2.2rem 1fr;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.pre__ok {
+  font-size: var(--t-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--lime);
+}
+
+.pre__text {
+  letter-spacing: 0.04em;
+}
+
+/* ---------- counter ---------- */
+
+.pre__meter {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  border-top: 1px solid var(--line);
+  padding-top: 1rem;
+}
+
+.pre__count {
+  font-size: clamp(2.6rem, 8vw, 5rem);
+  font-weight: 300;
+  line-height: 1;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+}
+
+.pre__pct {
+  font-size: var(--t-sm);
+  color: var(--ink-4);
+}
+
+.pre__hint {
+  margin-left: auto;
+  color: var(--ink-4);
+}
+
+/* ---------- progress hairline ---------- */
+
+.pre__bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--line);
+  z-index: 2;
+}
+
+.pre__barfill {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: var(--lime);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+}
+
+@media (max-width: 560px) {
+  .pre__hint {
+    display: none;
+  }
+  .pre__log {
+    gap: 0.28rem;
+  }
+}

@@ -1,0 +1,425 @@
+/* =========================================================
+   NAV — top bar · mobile overlay · section rail
+   ========================================================= */
+
+/* ---------------- scroll progress hairline ---------------- */
+
+.nav__progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: calc(var(--z-nav) + 1);
+  pointer-events: none;
+}
+.nav__progress i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--lime-dim), var(--lime));
+  transform-origin: 0 50%;
+  /* No JS: the scroll hook publishes --scroll-progress on :root. */
+  transform: scaleX(var(--scroll-progress));
+}
+
+/* ---------------- bar ---------------- */
+
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-nav);
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background var(--d-base) var(--e-out), border-color var(--d-base) var(--e-out),
+    backdrop-filter var(--d-base) var(--e-out);
+}
+
+.nav.is-scrolled {
+  background: color-mix(in oklab, var(--void) 72%, transparent);
+  border-bottom-color: var(--line);
+  backdrop-filter: blur(var(--blur)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(140%);
+}
+
+.nav__inner {
+  width: 100%;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding: 0.85rem var(--gutter);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: padding var(--d-base) var(--e-out);
+}
+.nav.is-scrolled .nav__inner {
+  padding-block: 0.6rem;
+}
+
+/* ---------------- logo ---------------- */
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex: none;
+  padding: 0.25rem;
+  border-radius: var(--r-sm);
+}
+
+.logo__mark {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  font-size: var(--t-xs);
+  letter-spacing: -0.02em;
+  color: var(--void);
+  background: var(--ink);
+  border-radius: var(--r-xs);
+  transition: background var(--d-fast) var(--e-out), color var(--d-fast) var(--e-out);
+}
+.logo:hover .logo__mark {
+  background: var(--lime);
+}
+
+.logo__word {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: var(--t-sm);
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  white-space: nowrap;
+}
+
+.logo__dot {
+  width: 5px;
+  height: 5px;
+  border-radius: var(--r-full);
+  background: var(--lime);
+  box-shadow: 0 0 0 0 var(--lime-a);
+  animation: logo-pulse 2.6s var(--e-smooth) infinite;
+}
+
+@keyframes logo-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 var(--lime-a);
+  }
+  50% {
+    box-shadow: 0 0 0 5px transparent;
+  }
+}
+
+/* ---------------- links ---------------- */
+
+.nav__links {
+  margin-inline: auto;
+}
+
+.nav__links > ul {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.1rem;
+}
+
+.nav__link {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--r-sm);
+  font-size: var(--t-sm);
+  color: var(--ink-3);
+  transition: color var(--d-fast) var(--e-out);
+}
+.nav__link:hover,
+.nav__link.is-active {
+  color: var(--ink);
+}
+
+.nav__num {
+  font-size: var(--t-micro);
+  color: var(--ink-4);
+  transition: color var(--d-fast) var(--e-out);
+}
+.nav__link:hover .nav__num,
+.nav__link.is-active .nav__num {
+  color: var(--lime);
+}
+
+.nav__label {
+  letter-spacing: -0.01em;
+}
+
+/* The indicator is positioned by GSAP from measured rects. */
+.nav__ind {
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 1px;
+  width: 0;
+  background: var(--lime);
+  pointer-events: none;
+  opacity: 0;
+  list-style: none;
+}
+
+/* ---------------- actions ---------------- */
+
+.nav__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: none;
+}
+
+.nav__k {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.38rem 0.5rem;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-sm);
+  background: var(--glass);
+  transition: border-color var(--d-fast) var(--e-out), background var(--d-fast) var(--e-out);
+}
+.nav__k:hover {
+  border-color: var(--line-3);
+  background: var(--glass-2);
+}
+.nav__k kbd {
+  font-family: var(--mono);
+  font-size: var(--t-micro);
+  color: var(--ink-2);
+  line-height: 1;
+}
+
+.nav__icon {
+  display: grid;
+  place-items: center;
+  width: 2.05rem;
+  height: 2.05rem;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-sm);
+  color: var(--ink-2);
+  background: var(--glass);
+  font-size: 0.9rem;
+  transition: color var(--d-fast) var(--e-out), border-color var(--d-fast) var(--e-out);
+}
+.nav__icon:hover {
+  color: var(--ink);
+  border-color: var(--line-3);
+}
+.nav__icon[aria-pressed='true'] {
+  color: var(--lime);
+  border-color: color-mix(in oklab, var(--lime) 35%, transparent);
+}
+
+.nav__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.95rem;
+  border-radius: var(--r-full);
+  background: var(--ink);
+  color: var(--void);
+  font-size: var(--t-sm);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  transition: background var(--d-fast) var(--e-out), transform var(--d-fast) var(--e-out);
+}
+.nav__cta:hover {
+  background: var(--lime);
+  transform: translateY(-1px);
+}
+.nav__cta svg {
+  font-size: 0.9em;
+}
+
+.nav__burger {
+  display: none;
+  place-items: center;
+  width: 2.3rem;
+  height: 2.3rem;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-sm);
+  color: var(--ink);
+  font-size: 1.05rem;
+}
+
+/* ---------------- mobile overlay ---------------- */
+
+.navmenu {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--z-nav) - 1);
+  background: var(--void);
+  padding: calc(5rem + var(--gutter) * 0.2) var(--gutter) var(--gutter);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2rem;
+  overflow-y: auto;
+  /* Hidden state is the initial paint; GSAP owns it from then on. */
+  visibility: hidden;
+  opacity: 0;
+}
+
+.navmenu::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(90% 60% at 100% 0%, var(--violet-a), transparent 70%);
+  pointer-events: none;
+}
+
+.navmenu__list {
+  position: relative;
+  display: grid;
+  gap: 0.2rem;
+}
+
+.navmenu__item a {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  padding-block: 0.5rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.navmenu__num {
+  font-size: var(--t-micro);
+  color: var(--lime);
+  flex: none;
+}
+
+.navmenu__label {
+  font-size: clamp(1.9rem, 10vw, 3.2rem);
+  color: var(--ink);
+}
+
+.navmenu__foot {
+  position: relative;
+  display: grid;
+  gap: 0.35rem;
+  border-top: 1px solid var(--line);
+  padding-top: 1.1rem;
+}
+.navmenu__mail {
+  font-size: var(--t-sm);
+  color: var(--ink);
+  word-break: break-all;
+}
+.navmenu__loc {
+  font-size: var(--t-micro);
+  color: var(--ink-4);
+}
+
+/* ---------------- right-edge section rail ---------------- */
+
+.rail {
+  position: fixed;
+  top: 50%;
+  right: clamp(0.6rem, 1.4vw, 1.4rem);
+  transform: translateY(-50%);
+  z-index: var(--z-rail);
+}
+
+.rail > ul {
+  display: grid;
+  gap: 0.55rem;
+  justify-items: end;
+}
+
+.rail__dot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0.2rem 0;
+  width: 1.6rem;
+  height: 1rem;
+}
+
+.rail__bar {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--r-full);
+  background: var(--ink-4);
+  transition: all var(--d-base) var(--e-out);
+}
+.rail__dot:hover .rail__bar {
+  background: var(--ink-2);
+}
+.rail__dot.is-active .rail__bar {
+  width: 2px;
+  height: 20px;
+  border-radius: 1px;
+  background: var(--lime);
+}
+
+.rail__tip {
+  position: absolute;
+  right: 1.5rem;
+  font-size: var(--t-micro);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(6px);
+  transition: opacity var(--d-fast) var(--e-out), transform var(--d-fast) var(--e-out);
+  pointer-events: none;
+}
+.rail__dot:hover .rail__tip,
+.rail__dot:focus-visible .rail__tip {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ---------------- responsive ---------------- */
+
+@media (max-width: 1180px) {
+  .nav__links {
+    display: none;
+  }
+  .nav__burger {
+    display: grid;
+  }
+  .nav__links + .nav__actions {
+    margin-left: auto;
+  }
+  .nav__actions {
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 720px) {
+  .nav__cta,
+  .nav__k {
+    display: none;
+  }
+  .logo__name {
+    display: none;
+  }
+}
+
+/* The rail needs real estate and a pointer; neither is a given. */
+@media (max-width: 1180px), (hover: none) {
+  .rail {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo__dot {
+    animation: none;
+  }
+}

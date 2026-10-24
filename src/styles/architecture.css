@@ -1,0 +1,321 @@
+/* =========================================================
+   ARCHITECTURE — the Scale-Ops diagram
+   A telemetry console: hairlines, mono readouts, one live
+   lime flow running through near-black.
+   ========================================================= */
+
+.arch__title {
+  max-width: 24ch;
+}
+
+.arch__blurb {
+  margin-bottom: clamp(1.75rem, 3vw, 2.75rem);
+}
+
+/* ---------------- Stage (instrument housing) ---------------- */
+
+.arch__stage {
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: linear-gradient(180deg, var(--glass), transparent 60%);
+  overflow: hidden;
+}
+
+.arch__stage-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: clamp(0.9rem, 2vw, 1.35rem) clamp(1rem, 2.2vw, 1.6rem);
+  border-bottom: 1px solid var(--line);
+  background: var(--obsidian);
+}
+
+.arch__stage-title {
+  font-size: clamp(1.05rem, 1.8vw, 1.4rem);
+  line-height: 1;
+}
+
+.arch__stage-sub {
+  margin-top: 0.4rem;
+  font-size: var(--t-micro);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.arch__live {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--t-micro);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--lime);
+}
+.arch__live.is-static {
+  color: var(--ink-3);
+}
+
+.arch__live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--r-full);
+  background: currentColor;
+  box-shadow: 0 0 0 4px var(--lime-a);
+  animation: archPulse 2.4s var(--e-in-out) infinite;
+}
+.arch__live.is-static .arch__live-dot {
+  animation: none;
+  box-shadow: none;
+}
+
+@keyframes archPulse {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 3px var(--lime-a);
+  }
+  50% {
+    opacity: 0.45;
+    box-shadow: 0 0 0 7px transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arch__live-dot {
+    animation: none;
+  }
+}
+
+/* ---------------- Canvas ---------------- */
+
+/* The canvas keeps a minimum logical width so the diagram never crushes;
+   narrow viewports pan it inside this container instead of the page. */
+.arch__canvas-wrap {
+  position: relative;
+  background: var(--void);
+}
+
+.arch__canvas {
+  display: block;
+  touch-action: pan-x pan-y;
+}
+
+/* ---------------- Telemetry strip ---------------- */
+
+.arch__telemetry {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem clamp(1rem, 3vw, 2.25rem);
+  padding: 0.8rem clamp(1rem, 2.2vw, 1.6rem);
+  border-top: 1px solid var(--line);
+  background: var(--obsidian);
+  font-size: var(--t-micro);
+}
+
+.arch__readout {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.arch__readout-k {
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.arch__readout-v {
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+
+.arch__readout--ok {
+  margin-left: auto;
+  align-items: center;
+  color: var(--lime);
+}
+.arch__readout--ok .arch__readout-v {
+  color: var(--lime);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.arch__readout--ok svg {
+  width: 0.85rem;
+  height: 0.85rem;
+}
+
+/* ---------------- Legend + detail ---------------- */
+
+.arch__below {
+  margin-top: clamp(1.25rem, 2.5vw, 2rem);
+  display: grid;
+  gap: clamp(1rem, 2vw, 1.5rem);
+}
+
+.arch__legend {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr));
+  gap: 0.4rem;
+  align-content: start;
+}
+
+.arch__key {
+  position: relative;
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.6rem 0.7rem 0.6rem 0.95rem;
+  text-align: left;
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  background: var(--glass);
+  overflow: hidden;
+  transition: border-color var(--d-fast) var(--e-out), background var(--d-fast) var(--e-out),
+    transform var(--d-fast) var(--e-out);
+}
+.arch__key:hover,
+.arch__key.is-active {
+  border-color: var(--line-3);
+  background: var(--glass-2);
+  transform: translateY(-1px);
+}
+
+.arch__key-bar {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 2px;
+  background: var(--k, var(--ink-4));
+  opacity: 0.6;
+  transition: opacity var(--d-fast) var(--e-out);
+}
+.arch__key.is-active .arch__key-bar {
+  opacity: 1;
+}
+
+.arch__key-label {
+  font-size: var(--t-xs);
+  color: var(--ink-2);
+  letter-spacing: 0.02em;
+}
+.arch__key.is-active .arch__key-label {
+  color: var(--ink);
+}
+
+.arch__key-kind {
+  font-size: var(--t-micro);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+.arch__key.is-active .arch__key-kind {
+  color: var(--k, var(--ink-3));
+}
+
+/* Node-kind accent mapping — one source for both legend and panel. */
+.arch [data-kind='edge'],
+.arch [data-kind='query'] {
+  --k: var(--cyan);
+}
+.arch [data-kind='service'],
+.arch [data-kind='worker'] {
+  --k: var(--lime);
+}
+.arch [data-kind='broker'] {
+  --k: var(--violet);
+}
+.arch [data-kind='cache'] {
+  --k: var(--amber);
+}
+.arch [data-kind='store'] {
+  --k: var(--ink-2);
+}
+
+.arch__detail {
+  padding: clamp(1.1rem, 2.2vw, 1.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  min-height: 13rem;
+}
+
+.arch__detail-kind {
+  font-size: var(--t-micro);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--k, var(--ink-3));
+}
+
+.arch__detail-title {
+  font-size: var(--t-h3);
+  line-height: 1;
+  color: var(--ink);
+}
+
+.arch__detail-body {
+  font-size: var(--t-sm);
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+.arch__detail-stat {
+  margin-top: auto;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.arch__detail-stat-v {
+  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+  line-height: 1;
+  color: var(--lime);
+}
+
+.arch__detail-stat-l {
+  font-size: var(--t-micro);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.arch__detail-hint {
+  margin-top: auto;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: var(--t-micro);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+.arch__detail-hint svg {
+  width: 0.85rem;
+  height: 0.85rem;
+}
+
+/* ---------------- Breakpoints ---------------- */
+
+@media (min-width: 900px) {
+  .arch__below {
+    grid-template-columns: minmax(0, 1fr) minmax(16rem, 23rem);
+    align-items: start;
+  }
+  .arch__legend {
+    grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+  }
+}
+
+@media (min-width: 1440px) {
+  .arch__legend {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
